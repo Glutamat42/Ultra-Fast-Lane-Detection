@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.common.config.global_config &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.common.config.global_config</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.common.config.global_config</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+
+<span class="kn">from</span> <span class="nn">src.common.config.cli_parser</span> <span class="kn">import</span> <span class="n">get_args</span>
+<span class="kn">from</span> <span class="nn">src.common.config.util</span> <span class="kn">import</span> <span class="n">Config</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">adv_cfg</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">__set_config</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Update config entry. You should not use this function in your code, once the cfg is set up it should not be changed again!</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        key: name of config entry</span>
+<span class="sd">        value: new value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;update &#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="s1">&#39; config&#39;</span><span class="p">)</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="process_modes"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.global_config.process_modes">[docs]</a><span class="k">def</span> <span class="nf">process_modes</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    handling of special runtime modes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cfg</span><span class="o">.</span><span class="n">mode</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;select mode&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;preview&#39;</span><span class="p">,</span> <span class="s1">&#39;prod&#39;</span><span class="p">,</span> <span class="s1">&#39;benchmark&#39;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Special mode </span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">mode</span><span class="si">}</span><span class="s1"> selected, this will override some of your config settings.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">cfg</span><span class="o">.</span><span class="n">test_txt</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">cfg</span><span class="o">.</span><span class="n">test_validation_data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;test_txt and test_validation_data has to be specified for testing mode&#39;</span><span class="p">)</span>
+            <span class="n">__set_config</span><span class="p">(</span><span class="s1">&#39;input_mode&#39;</span><span class="p">,</span> <span class="s1">&#39;images&#39;</span><span class="p">)</span>
+            <span class="n">__set_config</span><span class="p">(</span><span class="s1">&#39;output_mode&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">cfg</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;preview&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">cfg</span><span class="o">.</span><span class="n">test_txt</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;test_txt has to be specified for testing mode&#39;</span><span class="p">)</span>
+            <span class="n">__set_config</span><span class="p">(</span><span class="s1">&#39;input_mode&#39;</span><span class="p">,</span> <span class="s1">&#39;images&#39;</span><span class="p">)</span>
+            <span class="n">__set_config</span><span class="p">(</span><span class="s1">&#39;output_mode&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;video&#39;</span><span class="p">])</span>
+            <span class="n">__set_config</span><span class="p">(</span><span class="s1">&#39;video_out_enable_live_video&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">__set_config</span><span class="p">(</span><span class="s1">&#39;batch_size&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">cfg</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;prod&#39;</span><span class="p">:</span>
+            <span class="n">__set_config</span><span class="p">(</span><span class="s1">&#39;input_mode&#39;</span><span class="p">,</span> <span class="s1">&#39;camera&#39;</span><span class="p">)</span>
+            <span class="n">__set_config</span><span class="p">(</span><span class="s1">&#39;output_mode&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;prod&#39;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">cfg</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;benchmark&#39;</span><span class="p">:</span>
+            <span class="n">__set_config</span><span class="p">(</span><span class="s1">&#39;input_mode&#39;</span><span class="p">,</span> <span class="s1">&#39;images&#39;</span><span class="p">)</span>
+            <span class="n">__set_config</span><span class="p">(</span><span class="s1">&#39;output_mode&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">])</span>
+            <span class="n">__set_config</span><span class="p">(</span><span class="s1">&#39;measure_time&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">cfg</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;runtime&#39;</span></div>
+
+
+<div class="viewcode-block" id="merge_config"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.global_config.merge_config">[docs]</a><span class="k">def</span> <span class="nf">merge_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Config</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    combines default and user-config and cli arguments</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">()</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">user_cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="s1">&#39;configs/default.py&#39;</span><span class="p">)</span>
+
+    <span class="c1"># override default cfg with values from user cfg</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">user_cfg</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="p">]:</span>
+        <span class="n">cfg</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;update &#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="s1">&#39; config&#39;</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cfg</span></div>
+
+
+<div class="viewcode-block" id="AdvancedConfig"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.global_config.AdvancedConfig">[docs]</a><span class="k">class</span> <span class="nc">AdvancedConfig</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class provides &quot;advanced config values&quot; meaning it calculates some values which depend on other cfg values</span>
+<span class="sd">    They are calculated here to</span>
+
+<span class="sd">    - keep the configs clean</span>
+<span class="sd">    - prevent calculating them multiple times during runtime which should make your code cleaner and improve performance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AdvancedConfig.gen_train_dir"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.global_config.AdvancedConfig.gen_train_dir">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">gen_train_dir</span><span class="p">(</span><span class="n">cfg</span><span class="p">):</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">_%H%M%S&#39;</span><span class="p">)</span>
+        <span class="n">hyper_param_str</span> <span class="o">=</span> <span class="s1">&#39;_lr_</span><span class="si">%1.0e</span><span class="s1">_b_</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="n">work_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">work_dir</span><span class="p">,</span> <span class="n">now</span> <span class="o">+</span> <span class="n">hyper_param_str</span> <span class="o">+</span> <span class="n">cfg</span><span class="o">.</span><span class="n">note</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">work_dir</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># import pdb;pdb.set_trace()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cls_num_per_lane</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">h_samples</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaled_h_samples</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">cfg</span><span class="o">.</span><span class="n">img_height</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">h_samples</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_h_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="n">cfg</span><span class="o">.</span><span class="n">train_img_height</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">h_samples</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img_transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="n">cfg</span><span class="o">.</span><span class="n">train_img_height</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">train_img_width</span><span class="p">)),</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">)),</span>
+        <span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen_train_dir</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="init"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.global_config.init">[docs]</a><span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    in the good old times this was a simple import and forget, but this behaviour breaks sphinx :/</span>
+<span class="sd">    Now the config has to be initialized once at start</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">adv_cfg</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cfg</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">merge_config</span><span class="p">()</span>
+        <span class="n">process_modes</span><span class="p">()</span>
+        <span class="n">adv_cfg</span> <span class="o">=</span> <span class="n">AdvancedConfig</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Dummy"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.global_config.Dummy">[docs]</a><span class="k">class</span> <span class="nc">Dummy</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a simple dummy class (mock) which will always return a dummy string for every value its asked for</span>
+<span class="sd">    This prevents errors if this applications is run under unusual circumstances (eg doc generation)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            name: Name of the class/object this instantiation will replace. eg &#39;cfg&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<span class="c1"># Use mock class if this file is called during doc generation</span>
+<span class="k">if</span> <span class="s1">&#39;sphinx&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cfg</span><span class="p">:</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">Dummy</span><span class="p">(</span><span class="s1">&#39;cfg&#39;</span><span class="p">)</span>
+    <span class="n">adv_cfg</span> <span class="o">=</span> <span class="n">Dummy</span><span class="p">(</span><span class="s1">&#39;adv_cfg&#39;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

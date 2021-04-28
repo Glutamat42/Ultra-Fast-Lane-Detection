@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.runtime.runtime &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.runtime.runtime</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.runtime.runtime</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">supports multiple input modules</span>
+<span class="sd">images: image dataset from a text file containing a list of paths to images</span>
+<span class="sd">video: video input</span>
+<span class="sd">stream: eg webcam</span>
+<span class="sd">supports multiple output modules</span>
+<span class="sd">video - generates an output video; same as demo.py</span>
+<span class="sd">test - compares result with labels; same as test.py</span>
+<span class="sd">prod - will probably only log results, in future you will put your production code here</span>
+<span class="sd">i will not provide multi-gpu support. See test.py as a reference</span>
+<span class="sd">but it might be more complicated in the end as i dont plan to support multi gpu in any way</span>
+
+<span class="sd">A note on performance: This code should provide acceptable performance, but it was not developed with the target of</span>
+<span class="sd">achieving the best performance.</span>
+<span class="sd">The main goal is to provide a good understandable and expandable / adaptable code base.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span>
+
+<span class="kn">from</span> <span class="nn">src.runtime.modules.input.input_images</span> <span class="kn">import</span> <span class="n">input_images</span>
+<span class="kn">from</span> <span class="nn">src.runtime.modules.input.input_screencap</span> <span class="kn">import</span> <span class="n">input_screencap</span>
+<span class="kn">from</span> <span class="nn">src.runtime.modules.input.input_video</span> <span class="kn">import</span> <span class="n">input_video</span><span class="p">,</span> <span class="n">input_camera</span>
+<span class="kn">from</span> <span class="nn">src.runtime.modules.output.out_json</span> <span class="kn">import</span> <span class="n">JsonOut</span>
+<span class="kn">from</span> <span class="nn">src.runtime.modules.output.out_prod</span> <span class="kn">import</span> <span class="n">ProdOut</span>
+<span class="kn">from</span> <span class="nn">src.runtime.modules.output.out_test</span> <span class="kn">import</span> <span class="n">TestOut</span>
+<span class="kn">from</span> <span class="nn">src.runtime.modules.output.out_video</span> <span class="kn">import</span> <span class="n">VisualOut</span>
+<span class="kn">from</span> <span class="nn">src.common.model.model</span> <span class="kn">import</span> <span class="n">parsingNet</span>
+
+<span class="kn">from</span> <span class="nn">src.common.config.global_config</span> <span class="kn">import</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">adv_cfg</span>
+
+
+<div class="viewcode-block" id="setup_net"><a class="viewcode-back" href="../../../src.runtime.runtime.html#src.runtime.runtime.setup_net">[docs]</a><span class="k">def</span> <span class="nf">setup_net</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    setup neural network</span>
+<span class="sd">    load config and net (from hdd)</span>
+<span class="sd">    Returns: neural network (torch.nn.Module)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">cfg</span><span class="o">.</span><span class="n">backbone</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;18&#39;</span><span class="p">,</span> <span class="s1">&#39;34&#39;</span><span class="p">,</span> <span class="s1">&#39;50&#39;</span><span class="p">,</span> <span class="s1">&#39;101&#39;</span><span class="p">,</span> <span class="s1">&#39;152&#39;</span><span class="p">,</span> <span class="s1">&#39;50next&#39;</span><span class="p">,</span> <span class="s1">&#39;101next&#39;</span><span class="p">,</span> <span class="s1">&#39;50wide&#39;</span><span class="p">,</span> <span class="s1">&#39;101wide&#39;</span><span class="p">]</span>
+
+    <span class="c1"># basic inet of nn</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># automatically select best algorithms</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">parsingNet</span><span class="p">(</span>
+        <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">backbone</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">backbone</span><span class="p">,</span>
+        <span class="n">cls_dim</span><span class="o">=</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">griding_num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">adv_cfg</span><span class="o">.</span><span class="n">cls_num_per_lane</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">num_lanes</span><span class="p">),</span>
+        <span class="n">use_aux</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span> <span class="c1">#cuda()</span>
+    <span class="c1"># use_aux: It should be noted that our method only uses the auxiliary segmentation task in the training phase, and it would</span>
+    <span class="c1"># be removed in the testing phase. In this way, even we added the extra segmentation task, the running speed of our</span>
+    <span class="c1"># method would not be affected.</span>
+    <span class="c1"># .eval: set module to evaluation mode</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="c1"># load and apply our trained model</span>
+    <span class="n">state_dict</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">trained_model</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="s1">&#39;cpu&#39;</span><span class="p">)[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span>
+    <span class="n">compatible_state_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">state_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s1">&#39;module.&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
+            <span class="n">compatible_state_dict</span><span class="p">[</span><span class="n">k</span><span class="p">[</span><span class="mi">7</span><span class="p">:]]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">compatible_state_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">compatible_state_dict</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">net</span></div>
+
+
+<div class="viewcode-block" id="setup_input"><a class="viewcode-back" href="../../../src.runtime.runtime.html#src.runtime.runtime.setup_input">[docs]</a><span class="k">def</span> <span class="nf">setup_input</span><span class="p">(</span><span class="n">process_frames</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Callable</span><span class="p">[[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">ndarray</span><span class="p">]],</span> <span class="kc">None</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot; setup data input (where the frames come from)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        process_frames: function taking list of frames and a corresponding list of filenames</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">input_mode</span> <span class="o">==</span> <span class="s1">&#39;images&#39;</span><span class="p">:</span>
+        <span class="n">input_images</span><span class="p">(</span><span class="n">process_frames</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">cfg</span><span class="o">.</span><span class="n">input_mode</span> <span class="o">==</span> <span class="s1">&#39;video&#39;</span><span class="p">:</span>
+        <span class="n">input_video</span><span class="p">(</span><span class="n">process_frames</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">cfg</span><span class="o">.</span><span class="n">input_mode</span> <span class="o">==</span> <span class="s1">&#39;camera&#39;</span><span class="p">:</span>
+        <span class="n">input_camera</span><span class="p">(</span><span class="n">process_frames</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">cfg</span><span class="o">.</span><span class="n">input_mode</span> <span class="o">==</span> <span class="s1">&#39;screencap&#39;</span><span class="p">:</span>
+        <span class="n">input_screencap</span><span class="p">(</span><span class="n">process_frames</span><span class="p">,</span>
+                        <span class="p">{</span>
+                            <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="n">cfg</span><span class="o">.</span><span class="n">screencap_recording_area</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                            <span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="n">cfg</span><span class="o">.</span><span class="n">screencap_recording_area</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                            <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="n">cfg</span><span class="o">.</span><span class="n">screencap_recording_area</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                            <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="n">cfg</span><span class="o">.</span><span class="n">screencap_recording_area</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+                        <span class="p">})</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">input_mode</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="bp">NotImplemented</span><span class="p">(</span><span class="s1">&#39;unknown/unsupported input_mode&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="setup_out_method"><a class="viewcode-back" href="../../../src.runtime.runtime.html#src.runtime.runtime.setup_out_method">[docs]</a><span class="k">def</span> <span class="nf">setup_out_method</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; setup the output method</span>
+
+<span class="sd">    Returns: method/function reference to a function taking</span>
+
+<span class="sd">    * a list of predictions</span>
+<span class="sd">    * a list of corresponding filenames (if available)</span>
+<span class="sd">    * a list of source_frames (if available)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">methods</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">output_mode</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">output_mode</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">output_mode</span> <span class="o">==</span> <span class="s1">&#39;video&#39;</span><span class="p">:</span>
+            <span class="n">video_out</span> <span class="o">=</span> <span class="n">VisualOut</span><span class="p">()</span>
+            <span class="n">methods</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">video_out</span><span class="o">.</span><span class="n">out</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">output_mode</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
+            <span class="n">test_out</span> <span class="o">=</span> <span class="n">TestOut</span><span class="p">()</span>
+            <span class="n">methods</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">test_out</span><span class="o">.</span><span class="n">out</span><span class="p">,</span> <span class="n">test_out</span><span class="o">.</span><span class="n">post</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">output_mode</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
+            <span class="n">json_out</span> <span class="o">=</span> <span class="n">JsonOut</span><span class="p">()</span>
+            <span class="n">methods</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">json_out</span><span class="o">.</span><span class="n">out</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">output_mode</span> <span class="o">==</span> <span class="s1">&#39;prod&#39;</span><span class="p">:</span>
+            <span class="n">prod_out</span> <span class="o">=</span> <span class="n">ProdOut</span><span class="p">()</span>
+            <span class="n">methods</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">prod_out</span><span class="o">.</span><span class="n">out</span><span class="p">,</span> <span class="n">prod_out</span><span class="o">.</span><span class="n">post</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">output_mode</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="bp">NotImplemented</span><span class="p">(</span><span class="s1">&#39;unknown/unsupported output_mode&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">out_method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Call all out_methods and pass all arguments to them</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
+            <span class="n">method</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">post_method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Call all post_methods and pass all arguments to them</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
+            <span class="n">method</span><span class="p">[</span><span class="mi">1</span><span class="p">](</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out_method</span><span class="p">,</span> <span class="n">post_method</span></div>
+
+
+<div class="viewcode-block" id="FrameProcessor"><a class="viewcode-back" href="../../../src.runtime.runtime.html#src.runtime.runtime.FrameProcessor">[docs]</a><span class="k">class</span> <span class="nc">FrameProcessor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    helper class to process frame</span>
+
+<span class="sd">    provides simplified access to process_frame() method</span>
+<span class="sd">    or a better encapsulation compared to functional approach (depending on implementation ;))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">,</span> <span class="n">output_method</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">net</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_method</span> <span class="o">=</span> <span class="n">output_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measure_time</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">measure_time</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_time</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">avg_fps</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="FrameProcessor.process_frames"><a class="viewcode-back" href="../../../src.runtime.runtime.html#src.runtime.runtime.FrameProcessor.process_frames">[docs]</a>    <span class="k">def</span> <span class="nf">process_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_frames</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                       <span class="n">tqdm_bar</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; process frames and pass result to output_method.</span>
+
+<span class="sd">        Note: length of all supplied arrays (frames, names, source_frames) must be of the same length.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            frames: frames to process, have to be preprocessed (scaled, as tensor, normalized)</span>
+<span class="sd">            names: file paths - provide if possible, used by some out-modules</span>
+<span class="sd">            source_frames: source images (only scaled to img_height &amp; img_width, but not further processed, eg from camera) - provide if possible - used by some out modules</span>
+<span class="sd">            tqdm_bar: if using a tqdm progress bar in an input module pass it via this variable for better performance logging (if measure_time is eanbled)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_time</span><span class="p">:</span> <span class="n">time1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>  <span class="c1"># no_grad: disable gradient calculation. Reduces (gpu) memory consumption</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="p">(</span><span class="n">frames</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span> <span class="c1">#cuda()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_time</span><span class="p">:</span> <span class="n">time2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_method</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">source_frames</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_time</span><span class="p">:</span>
+            <span class="n">real_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="n">synthetic_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">time2</span> <span class="o">-</span> <span class="n">time1</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="n">real_time_wo_out</span> <span class="o">=</span> <span class="p">(</span><span class="n">time2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tqdm_bar</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tqdm_bar</span><span class="p">,</span> <span class="s1">&#39;set_postfix&#39;</span><span class="p">):</span>
+                <span class="n">tqdm_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">fps_real</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">real_time</span><span class="p">),</span>
+                                     <span class="n">fps_without_output</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">real_time_wo_out</span><span class="p">),</span>
+                                     <span class="n">fps_synthetic</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">synthetic_time</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;fps real: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">real_time</span><span class="p">)</span><span class="si">}</span><span class="s1">, real wo out: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">real_time_wo_out</span><span class="p">)</span><span class="si">}</span><span class="s1">, synthetic: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">synthetic_time</span><span class="p">)</span><span class="si">}</span><span class="s1">, frametime real: </span><span class="si">{</span><span class="n">real_time</span><span class="si">}</span><span class="s1">, real wo out: </span><span class="si">{</span><span class="n">real_time_wo_out</span><span class="si">}</span><span class="s1">, synthetic: </span><span class="si">{</span><span class="n">synthetic_time</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                    <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">avg_fps</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">real_time</span><span class="p">,</span> <span class="n">real_time_wo_out</span><span class="p">,</span> <span class="n">synthetic_time</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_time</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;AVG FPS: real, without out, synthetic: </span><span class="si">{</span><span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_fps</span><span class="p">)]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../src.runtime.runtime.html#src.runtime.runtime.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Entry method for this package.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">out_method</span><span class="p">,</span> <span class="n">post_method</span> <span class="o">=</span> <span class="n">setup_out_method</span><span class="p">()</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">setup_net</span><span class="p">()</span>
+    <span class="n">frame_processor</span> <span class="o">=</span> <span class="n">FrameProcessor</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">out_method</span><span class="p">)</span>
+    <span class="n">setup_input</span><span class="p">(</span><span class="n">frame_processor</span><span class="o">.</span><span class="n">process_frames</span><span class="p">)</span>
+    <span class="n">post_method</span><span class="p">()</span>  <span class="c1"># called when input method is finished (post processing)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Output modules - src.runtime.modules.output namespace &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.runtime.utils namespace" href="src.runtime.utils.html" />
+    <link rel="prev" title="Input Modules - src.runtime.modules.input namespace" href="src.runtime.modules.input.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="src.train.html">src.train package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="src.runtime.html">src.runtime package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="src.runtime.html#runtime-py-frameprocessor">runtime.py / FrameProcessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.runtime.html#input-modules">Input modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.runtime.html#output-modules">Output modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.runtime.html#measure-performance">Measure performance</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="src.runtime.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="src.runtime.modules.html">src.runtime.modules package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.runtime.utils.html">src.runtime.utils namespace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.runtime.runtime.html">src.runtime.runtime module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html">src.common package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs.html">configs namespace</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Code</a> &raquo;</li>
+        
+          <li><a href="src.runtime.html">src.runtime package</a> &raquo;</li>
+        
+          <li><a href="src.runtime.modules.html">src.runtime.modules package</a> &raquo;</li>
+        
+      <li>Output modules - src.runtime.modules.output namespace</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/src.runtime.modules.output.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="output-modules-src-runtime-modules-output-namespace">
+<h1>Output modules - src.runtime.modules.output namespace<a class="headerlink" href="#output-modules-src-runtime-modules-output-namespace" title="Permalink to this headline">¶</a></h1>
+<p>An output module is responsible to do something with the results supplied by the neural network.</p>
+<p>It is usually a good idea to use a class here to easily keep context between each call (e.g. a file handler).</p>
+<p>An output module has to provide a method which will be called for every batch the net processed.
+This method is usually called <code class="docutils literal notranslate"><span class="pre">out</span></code>. It has to accept three parameters</p>
+<ul class="simple">
+<li><p><strong>predictions</strong> (torch.Tensor): The raw output of the neural network</p></li>
+<li><p><strong>names</strong> (List[str], optional): Filenames (relative paths starting from <code class="docutils literal notranslate"><span class="pre">data_root</span></code>) for each sample in the batch.</p></li>
+<li><p><strong>frames</strong> (List[np.ndarray], optional): Source Frames, can be used to visualize the network results</p></li>
+</ul>
+<p><strong>Important</strong>: As python does not support interfaces it is not guaranteed the parameters of the out-method will have the same names. -&gt; The parameters are called as positional parameters.</p>
+<p>A module might also provide a method which is called after the input method finished.
+This method is usually called <code class="docutils literal notranslate"><span class="pre">post</span></code> and takes no parameters.
+It is not called if the applications exits because of an exception (like ctrl + c). Use a destructor for these cases.</p>
+<div class="section" id="predictions">
+<h2>predictions<a class="headerlink" href="#predictions" title="Permalink to this headline">¶</a></h2>
+<p>The result is a four dimensional tensor.
+The innermost dimension contains the probabilities that a point belongs to a lane.
+A sample Tensor of the innermost dimension could look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># [0th lane, 1st lane, 2nd lane, 3rd lane]</span>
+<span class="p">[</span> <span class="mf">0.1005</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.6627</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0224</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8216</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The next two dimensions describes a point on the image.
+Let’s ignore for a second that this is about estimations and just think about a grayscale image.
+A grayscale image could be represented as follows</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>  <span class="c1"># column 0</span>
+    <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>  <span class="c1"># column 1</span>
+    <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>  <span class="c1"># column 2</span>
+    <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>  <span class="c1"># column 3</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>It’s a bit unintuitive because rows and lines are inverted compared to how it would normally be.
+If rendered this would look as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">50</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span>
+<span class="mi">60</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span>
+<span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span>
+</pre></div>
+</div>
+<p>Let’s transfer this back to the network result.
+The second and third innermost dimensions are exactly what is described above, but instead of grayscale values they
+contain the probabilities.</p>
+<p>The outer dimension equals the batch size.
+Batch size one means there will be one sample inside the outer dimension, batch size two results in being two samples inside this dimension.</p>
+<p>To summarize this, the four dimensional tensor is, from inside to outside, constructed as follows</p>
+<ol class="simple">
+<li><p>Probabilities for one of the four lanes</p></li>
+<li><p>y coordinates (column)</p></li>
+<li><p>x coordinates (rows)</p></li>
+<li><p>samples</p></li>
+</ol>
+<p><strong>Hint</strong>: The prediction resolution does not match the resolution of the sample supplied to the net.
+The y resolution matches the amount of h_samples (cls_num_per_lane) and the x resolution the config’s griding_num.</p>
+</div>
+<div class="section" id="predictions-evaluation-helpers">
+<h2>predictions evaluation helpers<a class="headerlink" href="#predictions-evaluation-helpers" title="Permalink to this headline">¶</a></h2>
+<p>The output module contains a <a class="reference internal" href="#module-src.runtime.modules.output.common" title="src.runtime.modules.output.common"><span class="xref myst py py-mod">common.py</span></a> file, which provides functions helping with
+evaluating the predictions. It’s recommended to use them as follows to get the most accurate predictions scaled to the
+image’s width (cfg.img_width).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">map_x_to_image</span><span class="p">(</span><span class="n">evaluate_predictions</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>The result per sample will look as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="p">[</span><span class="o">-</span><span class="mf">2.</span>         <span class="o">-</span><span class="mf">2.</span>         <span class="mf">38.73001617</span> <span class="o">-</span><span class="mf">2.</span>        <span class="p">]</span>
+<span class="p">[</span><span class="o">-</span><span class="mf">2.</span>         <span class="mf">33.28607988</span> <span class="mf">38.91600986</span> <span class="o">-</span><span class="mf">2.</span>        <span class="p">]</span>
+<span class="p">[</span><span class="o">-</span><span class="mf">2.</span>         <span class="mf">32.92785092</span> <span class="mf">39.23658818</span> <span class="o">-</span><span class="mf">2.</span>        <span class="p">]</span>
+<span class="p">[</span><span class="o">-</span><span class="mf">2.</span>         <span class="mf">32.48616481</span> <span class="mf">39.6095107</span>  <span class="o">-</span><span class="mf">2.</span>        <span class="p">]</span>
+<span class="p">[</span><span class="o">-</span><span class="mf">2.</span>         <span class="mf">31.6839597</span>  <span class="mf">40.14521082</span> <span class="o">-</span><span class="mf">2.</span>        <span class="p">]</span>
+<span class="p">[</span><span class="mf">27.46894699</span> <span class="mf">30.73299785</span> <span class="mf">40.73678818</span> <span class="o">-</span><span class="mf">2.</span>        <span class="p">]</span>
+<span class="p">[</span><span class="mf">25.48803848</span> <span class="mf">29.7993621</span>  <span class="mf">41.32698695</span> <span class="o">-</span><span class="mf">2.</span>        <span class="p">]</span>
+<span class="p">[</span><span class="mf">23.15705156</span> <span class="mf">28.82870762</span> <span class="mf">42.06111232</span> <span class="o">-</span><span class="mf">2.</span>        <span class="p">]</span>
+<span class="p">[</span><span class="mf">20.72240206</span> <span class="mf">27.86122163</span> <span class="mf">42.75888292</span> <span class="o">-</span><span class="mf">2.</span>        <span class="p">]</span>
+<span class="p">[</span><span class="mf">18.6873128</span>  <span class="mf">26.90077982</span> <span class="mf">43.4880209</span>  <span class="o">-</span><span class="mf">2.</span>        <span class="p">]</span>
+<span class="p">[</span><span class="mf">16.89856385</span> <span class="mf">26.03937897</span> <span class="mf">44.17240046</span> <span class="o">-</span><span class="mf">2.</span>        <span class="p">]</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>Every column represents one lane. Remember: -2 means this points belongs to the residue class.</p>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-src.runtime.modules.output.common">
+<span id="src-runtime-modules-output-common-module"></span><h3>src.runtime.modules.output.common module<a class="headerlink" href="#module-src.runtime.modules.output.common" title="Permalink to this headline">¶</a></h3>
+<p>Contains some common helper functions for output modules</p>
+<dl class="py function">
+<dt id="src.runtime.modules.output.common.evaluate_predictions">
+<code class="sig-prename descclassname">src.runtime.modules.output.common.</code><code class="sig-name descname">evaluate_predictions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/output/common.html#evaluate_predictions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.common.evaluate_predictions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate predictions
+Tries to improve the estimation by including all probabilities instead of only using the most probable class
+:Parameters: <strong>y</strong> – one result sample</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>2D array containing x values (float) per h_sample and lane</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.runtime.modules.output.common.get_filename_date_string">
+<code class="sig-prename descclassname">src.runtime.modules.output.common.</code><code class="sig-name descname">get_filename_date_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/output/common.html#get_filename_date_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.common.get_filename_date_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>get current date and time in a format suitable for file exports
+Returns: string</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.runtime.modules.output.common.map_x_to_image">
+<code class="sig-prename descclassname">src.runtime.modules.output.common.</code><code class="sig-name descname">map_x_to_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/output/common.html#map_x_to_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.common.map_x_to_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map x-axis (griding_num) estimations to image coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>y</strong> – one result sample (can be directly from net or post-processed -&gt; all number types should be accepted)</p>
+</dd>
+</dl>
+<p>Returns: x coordinates for each lane</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.runtime.modules.output.out_json">
+<span id="src-runtime-modules-output-out-json-module"></span><h3>src.runtime.modules.output.out_json module<a class="headerlink" href="#module-src.runtime.modules.output.out_json" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="src.runtime.modules.output.out_json.JsonOut">
+<em class="property">class </em><code class="sig-prename descclassname">src.runtime.modules.output.out_json.</code><code class="sig-name descname">JsonOut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span><span class="o">=</span><span class="default_value">'cfg.work_dir/2021-03-19_16-44-42_cfg.dataset_t.json'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/output/out_json.html#JsonOut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.out_json.JsonOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>provides the ability to output detected data in a json like format (one json object per line) to a file
+This file will be analog to the source labels you are using for training</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> – full file path where the results will be stored</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="src.runtime.modules.output.out_json.JsonOut.out">
+<code class="sig-name descname">out</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">names</span></em>, <em class="sig-param"><span class="n">frames</span><span class="p">:</span> <span class="n">List<span class="p">[</span>numpy.ndarray<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/output/out_json.html#JsonOut.out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.out_json.JsonOut.out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate json output to text file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> – network result (list of samples)</p></li>
+<li><p><strong>names</strong> – filenames for y</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.runtime.modules.output.out_prod">
+<span id="src-runtime-modules-output-out-prod-module"></span><h3>src.runtime.modules.output.out_prod module<a class="headerlink" href="#module-src.runtime.modules.output.out_prod" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="src.runtime.modules.output.out_prod.ProdOut">
+<em class="property">class </em><code class="sig-prename descclassname">src.runtime.modules.output.out_prod.</code><code class="sig-name descname">ProdOut</code><a class="reference internal" href="_modules/src/runtime/modules/output/out_prod.html#ProdOut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.out_prod.ProdOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>You can use this class as a starting point to implement your “real use case”</p>
+<dl class="py method">
+<dt id="src.runtime.modules.output.out_prod.ProdOut.out">
+<code class="sig-name descname">out</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predictions</span><span class="p">:</span> <span class="n">torch.Tensor</span></em>, <em class="sig-param"><span class="n">names</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">frames</span><span class="p">:</span> <span class="n">List<span class="p">[</span>numpy.ndarray<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/output/out_prod.html#ProdOut.out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.out_prod.ProdOut.out" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the place where you implement your out-logic.
+notice that you’ll receive a list of predictions and filenames. The list list size equals your batch size.</p>
+<p>You will probably want to find the most probable class first
+or do more complex things to get more accurate class assignments</p>
+<p>Next step will be mapping the predicted class in a format suitable for your use case.
+Eg for image export this would be image coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predictions</strong> – network result (list of samples containing probabilities per sample)</p></li>
+<li><p><strong>names</strong> – filenames for predictions, might not be available depending on input module</p></li>
+<li><p><strong>frames</strong> – source frames, might not be available depending on input module</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="src.runtime.modules.output.out_prod.ProdOut.post">
+<code class="sig-name descname">post</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/output/out_prod.html#ProdOut.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.out_prod.ProdOut.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called after dataset/video/whatever was completely processed. You can do things like cleanup or printing stats here</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.runtime.modules.output.out_test">
+<span id="src-runtime-modules-output-out-test-module"></span><h3>src.runtime.modules.output.out_test module<a class="headerlink" href="#module-src.runtime.modules.output.out_test" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="src.runtime.modules.output.out_test.TestOut">
+<em class="property">class </em><code class="sig-prename descclassname">src.runtime.modules.output.out_test.</code><code class="sig-name descname">TestOut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">out_file</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'cfg.test_validation_data'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/output/out_test.html#TestOut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.out_test.TestOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This module allows to validate predictions against known labels. It prints the accuracy after the test completed.
+Additionally it writes its results as csv to the directory where the trained model is located.</p>
+<p>used non-basic-cfg values:</p>
+<ul class="simple">
+<li><p>cfg.test_validation_data</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>out_file</strong> – relative path to cfg.data_root</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="src.runtime.modules.output.out_test.TestOut.out">
+<code class="sig-name descname">out</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predictions</span><span class="p">:</span> <span class="n">torch.Tensor</span></em>, <em class="sig-param"><span class="n">names</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">_</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/output/out_test.html#TestOut.out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.out_test.TestOut.out" title="Permalink to this definition">¶</a></dt>
+<dd><p>collect results of batch</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predictions</strong> – network result (list of samples containing probabilities per sample)</p></li>
+<li><p><strong>names</strong> – filenames for predictions, if empty</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="src.runtime.modules.output.out_test.TestOut.post">
+<code class="sig-name descname">post</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/output/out_test.html#TestOut.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.out_test.TestOut.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate collected data and print accuracy</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.runtime.modules.output.out_video">
+<span id="src-runtime-modules-output-out-video-module"></span><h3>src.runtime.modules.output.out_video module<a class="headerlink" href="#module-src.runtime.modules.output.out_video" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="src.runtime.modules.output.out_video.VisualOut">
+<em class="property">class </em><code class="sig-prename descclassname">src.runtime.modules.output.out_video.</code><code class="sig-name descname">VisualOut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">enable_live_video</span><span class="o">=</span><span class="default_value">'cfg.video_out_enable_live_video'</span></em>, <em class="sig-param"><span class="n">enable_video_export</span><span class="o">=</span><span class="default_value">'cfg.video_out_enable_video_export'</span></em>, <em class="sig-param"><span class="n">enable_image_export</span><span class="o">=</span><span class="default_value">'cfg.video_out_enable_image_export'</span></em>, <em class="sig-param"><span class="n">enable_line_mode</span><span class="o">=</span><span class="default_value">'cfg.video_out_enable_line_mode'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/output/out_video.html#VisualOut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.out_video.VisualOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>provides different visual output types</p>
+<ul class="simple">
+<li><p>live video</p></li>
+<li><p>record video</p></li>
+<li><p>save images</p></li>
+</ul>
+<p>visualization can be points or lines</p>
+<p>used non-basic-cfg values:</p>
+<ul class="simple">
+<li><p>cfg.video_out_enable_live_video</p></li>
+<li><p>cfg.video_out_enable_video_export</p></li>
+<li><p>cfg.video_out_enable_image_export</p></li>
+<li><p>cfg.video_out_enable_line_mode</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>enable_live_video</strong> – show video</p></li>
+<li><p><strong>enable_video_export</strong> – save as video to disk</p></li>
+<li><p><strong>enable_image_export</strong> – save as image files to disk</p></li>
+<li><p><strong>enable_line_mode</strong> – visualization as lines instead of dots</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="src.runtime.modules.output.out_video.VisualOut.out">
+<code class="sig-name descname">out</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">torch.Tensor</span></em>, <em class="sig-param"><span class="n">names</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">frames</span><span class="p">:</span> <span class="n">List<span class="p">[</span>numpy.ndarray<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/output/out_video.html#VisualOut.out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.out_video.VisualOut.out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate visual output</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> – network result (list of samples containing probabilities per sample)</p></li>
+<li><p><strong>names</strong> – filenames for y, if empty: frames have to be provided</p></li>
+<li><p><strong>frames</strong> – source frames, if empty: names have to be provided</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.runtime.modules.output.out_video.get_lane_color">
+<code class="sig-prename descclassname">src.runtime.modules.output.out_video.</code><code class="sig-name descname">get_lane_color</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; Tuple<a class="reference internal" href="_modules/src/runtime/modules/output/out_video.html#get_lane_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.output.out_video.get_lane_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a predefined colors depending on i. Colors repeat if i gets to big</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>i</strong> – any number, same number -&gt; same color</p>
+</dd>
+</dl>
+<p>Returns: Tuple containing 3 values, eg (255, 0, 0)</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="src.runtime.utils.html" class="btn btn-neutral float-right" title="src.runtime.utils namespace" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="src.runtime.modules.input.html" class="btn btn-neutral float-left" title="Input Modules - src.runtime.modules.input namespace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

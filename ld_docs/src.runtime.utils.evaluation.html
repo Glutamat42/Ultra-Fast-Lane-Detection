@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.runtime.utils.evaluation namespace &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.runtime.runtime module" href="src.runtime.runtime.html" />
+    <link rel="prev" title="src.runtime.utils namespace" href="src.runtime.utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="src.train.html">src.train package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="src.runtime.html">src.runtime package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="src.runtime.html#runtime-py-frameprocessor">runtime.py / FrameProcessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.runtime.html#input-modules">Input modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.runtime.html#output-modules">Output modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.runtime.html#measure-performance">Measure performance</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="src.runtime.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="src.runtime.modules.html">src.runtime.modules package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="src.runtime.utils.html">src.runtime.utils namespace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.runtime.runtime.html">src.runtime.runtime module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html">src.common package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs.html">configs namespace</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Code</a> &raquo;</li>
+        
+          <li><a href="src.runtime.html">src.runtime package</a> &raquo;</li>
+        
+          <li><a href="src.runtime.utils.html">src.runtime.utils namespace</a> &raquo;</li>
+        
+      <li>src.runtime.utils.evaluation namespace</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/src.runtime.utils.evaluation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="src-runtime-utils-evaluation-namespace">
+<h1>src.runtime.utils.evaluation namespace<a class="headerlink" href="#src-runtime-utils-evaluation-namespace" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.runtime.utils.evaluation.lane">
+<span id="src-runtime-utils-evaluation-lane-module"></span><h2>src.runtime.utils.evaluation.lane module<a class="headerlink" href="#module-src.runtime.utils.evaluation.lane" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="src.runtime.utils.evaluation.lane.LaneEval">
+<em class="property">class </em><code class="sig-prename descclassname">src.runtime.utils.evaluation.lane.</code><code class="sig-name descname">LaneEval</code><a class="reference internal" href="_modules/src/runtime/utils/evaluation/lane.html#LaneEval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.utils.evaluation.lane.LaneEval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="src.runtime.utils.evaluation.lane.LaneEval.bench">
+<em class="property">static </em><code class="sig-name descname">bench</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pred</span></em>, <em class="sig-param"><span class="n">gt</span></em>, <em class="sig-param"><span class="n">y_samples</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/utils/evaluation/lane.html#LaneEval.bench"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.utils.evaluation.lane.LaneEval.bench" title="Permalink to this definition">¶</a></dt>
+<dd><p>bench one sample</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pred</strong> – predicted lanes</p></li>
+<li><p><strong>gt</strong> – validation lanes</p></li>
+<li><p><strong>y_samples</strong> – y coordinates</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns: accuracy, false positives, false negatives</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="src.runtime.utils.evaluation.lane.LaneEval.bench_one_submit">
+<em class="property">static </em><code class="sig-name descname">bench_one_submit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_pred</span></em>, <em class="sig-param"><span class="n">json_gt</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/utils/evaluation/lane.html#LaneEval.bench_one_submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.utils.evaluation.lane.LaneEval.bench_one_submit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do bench for a list of json-results by calling bench() for every sample</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_pred</strong> – predicted list</p></li>
+<li><p><strong>json_gt</strong> – compare list</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns: bench result</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="src.runtime.utils.evaluation.lane.LaneEval.get_angle">
+<em class="property">static </em><code class="sig-name descname">get_angle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xs</span></em>, <em class="sig-param"><span class="n">y_samples</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/utils/evaluation/lane.html#LaneEval.get_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.utils.evaluation.lane.LaneEval.get_angle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.runtime.utils.evaluation.lane.LaneEval.line_accuracy">
+<em class="property">static </em><code class="sig-name descname">line_accuracy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pred</span></em>, <em class="sig-param"><span class="n">gt</span></em>, <em class="sig-param"><span class="n">thresh</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/utils/evaluation/lane.html#LaneEval.line_accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.utils.evaluation.lane.LaneEval.line_accuracy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.runtime.utils.evaluation.lane.LaneEval.lr">
+<code class="sig-name descname">lr</code><em class="property"> = LinearRegression()</em><a class="headerlink" href="#src.runtime.utils.evaluation.lane.LaneEval.lr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.runtime.utils.evaluation.lane.LaneEval.pixel_thresh">
+<code class="sig-name descname">pixel_thresh</code><em class="property"> = 20</em><a class="headerlink" href="#src.runtime.utils.evaluation.lane.LaneEval.pixel_thresh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.runtime.utils.evaluation.lane.LaneEval.pt_thresh">
+<code class="sig-name descname">pt_thresh</code><em class="property"> = 0.85</em><a class="headerlink" href="#src.runtime.utils.evaluation.lane.LaneEval.pt_thresh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="src.runtime.runtime.html" class="btn btn-neutral float-right" title="src.runtime.runtime module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="src.runtime.utils.html" class="btn btn-neutral float-left" title="src.runtime.utils namespace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

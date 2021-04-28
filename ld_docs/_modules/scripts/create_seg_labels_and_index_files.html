@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scripts.create_seg_labels_and_index_files &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>scripts.create_seg_labels_and_index_files</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scripts.create_seg_labels_and_index_files</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">generate segmentation label files (png) and the required index files for training and testing</span>
+
+<span class="sd">usage: create_seg_labels_and_index_files.py --root &lt;path to dataset&gt; --train_files &lt;comma seperated list of json files containing train data&gt; --test_files &lt;list containing test data&gt;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">argparse</span>
+
+
+<div class="viewcode-block" id="calc_k"><a class="viewcode-back" href="../../scripts.html#scripts.create_seg_labels_and_index_files.calc_k">[docs]</a><span class="k">def</span> <span class="nf">calc_k</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the direction of lanes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">line_x</span> <span class="o">=</span> <span class="n">line</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">line_y</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">line_x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">line_x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">line_y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">line_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">length</span> <span class="o">&lt;</span> <span class="mi">90</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">10</span>  <span class="c1"># if the lane is too short, it will be skipped</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">line_x</span><span class="p">,</span> <span class="n">line_y</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">rad</span></div>
+
+
+<div class="viewcode-block" id="draw"><a class="viewcode-back" href="../../scripts.html#scripts.create_seg_labels_and_index_files.draw">[docs]</a><span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate the segmentation label according to json annotation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">line_x</span> <span class="o">=</span> <span class="n">line</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">line_y</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">pt0</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">line_x</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">line_y</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">line_x</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">line_x</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">line_y</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">line_x</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">])</span> <span class="o">-</span> <span class="mi">20</span><span class="p">),</span>
+                    <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">lineType</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">LINE_AA</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">*</span> <span class="mi">60</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">line_x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">pt0</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">line_x</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">line_y</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])),</span> <span class="p">(</span><span class="n">idx</span><span class="p">,),</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+        <span class="n">pt0</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">line_x</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">line_y</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]))</span></div>
+
+
+<div class="viewcode-block" id="get_tusimple_list"><a class="viewcode-back" href="../../scripts.html#scripts.create_seg_labels_and_index_files.get_tusimple_list">[docs]</a><span class="k">def</span> <span class="nf">get_tusimple_list</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">label_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get all the files&#39; names from the json annotation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">label_json_all</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">label_list</span><span class="p">:</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+        <span class="n">label_json</span> <span class="o">=</span> <span class="p">[</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
+        <span class="n">label_json_all</span> <span class="o">+=</span> <span class="n">label_json</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="s1">&#39;raw_file&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">label_json_all</span><span class="p">]</span>
+    <span class="n">h_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="s1">&#39;h_samples&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">label_json_all</span><span class="p">]</span>
+    <span class="n">lanes</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="s1">&#39;lanes&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">label_json_all</span><span class="p">]</span>
+
+    <span class="n">line_txt</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lanes</span><span class="p">)):</span>
+        <span class="n">line_txt_i</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lanes</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">lanes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="n">lanes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">2</span>
+            <span class="n">line_txt_tmp</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h_samples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">valid</span><span class="p">])</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">lanes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">valid</span><span class="p">]))</span>
+            <span class="n">line_txt_tmp</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">lanes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">valid</span><span class="p">]))</span>
+            <span class="n">line_txt_tmp</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">h_samples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">valid</span><span class="p">]))</span>
+            <span class="n">line_txt_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line_txt_tmp</span><span class="p">)</span>
+        <span class="n">line_txt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line_txt_i</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">names</span><span class="p">,</span> <span class="n">line_txt</span></div>
+
+
+<div class="viewcode-block" id="generate_segmentation_and_train_list"><a class="viewcode-back" href="../../scripts.html#scripts.create_seg_labels_and_index_files.generate_segmentation_and_train_list">[docs]</a><span class="k">def</span> <span class="nf">generate_segmentation_and_train_list</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">line_txt</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The lane annotations of the Tusimple dataset is not strictly in order, so we need to find out the correct lane order for segmentation.</span>
+<span class="sd">    We use the same definition as CULane, in which the four lanes from left to right are represented as 1,2,3,4 in segentation label respectively.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">train_gt_fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;train_gt.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">line_txt</span><span class="p">))):</span>
+        <span class="n">tmp_line</span> <span class="o">=</span> <span class="n">line_txt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tmp_line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="c1"># quick fix for invalid input data</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;no lines on current sample&#39;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tmp_line</span><span class="p">)):</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">tmp_line</span><span class="p">[</span><span class="n">j</span><span class="p">])))</span>
+
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">calc_k</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">])</span>  <span class="c1"># get the direction of each lane</span>
+            <span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">RankWarning</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;rank warning&#39;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+        <span class="n">k_neg</span> <span class="o">=</span> <span class="n">ks</span><span class="p">[</span><span class="n">ks</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">k_pos</span> <span class="o">=</span> <span class="n">ks</span><span class="p">[</span><span class="n">ks</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">k_neg</span> <span class="o">=</span> <span class="n">k_neg</span><span class="p">[</span><span class="n">k_neg</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">10</span><span class="p">]</span>  <span class="c1"># -10 means the lane is too short and is discarded</span>
+        <span class="n">k_pos</span> <span class="o">=</span> <span class="n">k_pos</span><span class="p">[</span><span class="n">k_pos</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">10</span><span class="p">]</span>
+        <span class="n">k_neg</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">k_pos</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="n">label_path</span> <span class="o">=</span> <span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">][:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;png&#39;</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">720</span><span class="p">,</span> <span class="mi">1280</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="n">bin_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">k_neg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># for only one lane in the left</span>
+            <span class="n">which_lane</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ks</span> <span class="o">==</span> <span class="n">k_neg</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">draw</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">which_lane</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">bin_label</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">k_neg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># for two lanes in the left</span>
+            <span class="n">which_lane</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ks</span> <span class="o">==</span> <span class="n">k_neg</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">draw</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">which_lane</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">which_lane</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ks</span> <span class="o">==</span> <span class="n">k_neg</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">draw</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">which_lane</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">bin_label</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">bin_label</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">k_neg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># for more than two lanes in the left,</span>
+            <span class="n">which_lane</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ks</span> <span class="o">==</span> <span class="n">k_neg</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># we only choose the two lanes that are closest to the center</span>
+            <span class="n">draw</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">which_lane</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">which_lane</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ks</span> <span class="o">==</span> <span class="n">k_neg</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">draw</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">which_lane</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">bin_label</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">bin_label</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">k_pos</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># For the lanes in the right, the same logical is adopted.</span>
+            <span class="n">which_lane</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ks</span> <span class="o">==</span> <span class="n">k_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">draw</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">which_lane</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="n">bin_label</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">k_pos</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">which_lane</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ks</span> <span class="o">==</span> <span class="n">k_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">draw</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">which_lane</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="n">which_lane</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ks</span> <span class="o">==</span> <span class="n">k_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">draw</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">which_lane</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="n">bin_label</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">bin_label</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">k_pos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">which_lane</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ks</span> <span class="o">==</span> <span class="n">k_pos</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">draw</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">which_lane</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="n">which_lane</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ks</span> <span class="o">==</span> <span class="n">k_pos</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">draw</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">which_lane</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="n">bin_label</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">bin_label</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">label_path</span><span class="p">),</span> <span class="n">label</span><span class="p">)</span>
+
+        <span class="n">train_gt_fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">label_path</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">bin_label</span><span class="p">)))</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">train_gt_fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="get_args"><a class="viewcode-back" href="../../scripts.html#scripts.create_seg_labels_and_index_files.get_args">[docs]</a><span class="k">def</span> <span class="nf">get_args</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--root&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The root of the Tusimple dataset&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--train_files&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;comma seperated list of json files containing train data&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--test_files&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;comma seperated list of json files containing test data&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">()</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">train_files</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">test_files</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;train_files or test_files missing&#39;</span><span class="p">)</span>
+
+    <span class="c1"># training set</span>
+    <span class="n">names</span><span class="p">,</span> <span class="n">line_txt</span> <span class="o">=</span> <span class="n">get_tusimple_list</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">train_files</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span>
+    <span class="c1"># generate segmentation and training list for training</span>
+    <span class="n">generate_segmentation_and_train_list</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">line_txt</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+
+    <span class="c1"># testing set</span>
+    <span class="n">names</span><span class="p">,</span> <span class="n">line_txt</span> <span class="o">=</span> <span class="n">get_tusimple_list</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">test_files</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span>
+    <span class="c1"># generate testing set for testing</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;test.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

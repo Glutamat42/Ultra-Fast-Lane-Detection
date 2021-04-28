@@ -1,0 +1,781 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.train.utils namespace &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.runtime package" href="src.runtime.html" />
+    <link rel="prev" title="src.train.data namespace" href="src.train.data.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.train.html">src.train package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="src.train.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="src.train.data.html">src.train.data namespace</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">src.train.utils namespace</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.train.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.train.html#module-src.train.train">src.train.train module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.train.html#module-src.train">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.runtime.html">src.runtime package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html">src.common package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs.html">configs namespace</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Code</a> &raquo;</li>
+        
+          <li><a href="src.train.html">src.train package</a> &raquo;</li>
+        
+      <li>src.train.utils namespace</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/src.train.utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="src-train-utils-namespace">
+<h1>src.train.utils namespace<a class="headerlink" href="#src-train-utils-namespace" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.train.utils.common">
+<span id="src-train-utils-common-module"></span><h2>src.train.utils.common module<a class="headerlink" href="#module-src.train.utils.common" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="src.train.utils.common.cp_projects">
+<code class="sig-prename descclassname">src.train.utils.common.</code><code class="sig-name descname">cp_projects</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">to_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/common.html#cp_projects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.common.cp_projects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.common.get_logger">
+<code class="sig-prename descclassname">src.train.utils.common.</code><code class="sig-name descname">get_logger</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">work_dir</span></em>, <em class="sig-param"><span class="n">cfg</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/common.html#get_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.common.get_logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.common.save_model">
+<code class="sig-prename descclassname">src.train.utils.common.</code><code class="sig-name descname">save_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">net</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">epoch</span></em>, <em class="sig-param"><span class="n">save_path</span></em>, <em class="sig-param"><span class="n">distributed</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/common.html#save_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.common.save_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.train.utils.dist_utils">
+<span id="src-train-utils-dist-utils-module"></span><h2>src.train.utils.dist_utils module<a class="headerlink" href="#module-src.train.utils.dist_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="src.train.utils.dist_utils.DistSummaryWriter">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">DistSummaryWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#DistSummaryWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.DistSummaryWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.tensorboard.writer.SummaryWriter</span></code></p>
+<p>Creates a <cite>SummaryWriter</cite> that will write out events and summaries
+to the event file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log_dir</strong> (<em>string</em>) – Save directory location. Default is
+runs/<strong>CURRENT_DATETIME_HOSTNAME</strong>, which changes after each run.
+Use hierarchical folder structure to compare
+between runs easily. e.g. pass in ‘runs/exp1’, ‘runs/exp2’, etc.
+for each new experiment to compare across them.</p></li>
+<li><p><strong>comment</strong> (<em>string</em>) – Comment log_dir suffix appended to the default
+<code class="docutils literal notranslate"><span class="pre">log_dir</span></code>. If <code class="docutils literal notranslate"><span class="pre">log_dir</span></code> is assigned, this argument has no effect.</p></li>
+<li><p><strong>purge_step</strong> (<em>int</em>) – When logging crashes at step <span class="math notranslate nohighlight">\(T+X\)</span> and restarts at step <span class="math notranslate nohighlight">\(T\)</span>,
+any events whose global_step larger or equal to <span class="math notranslate nohighlight">\(T\)</span> will be
+purged and hidden from TensorBoard.
+Note that crashed and resumed experiments should have the same <code class="docutils literal notranslate"><span class="pre">log_dir</span></code>.</p></li>
+<li><p><strong>max_queue</strong> (<em>int</em>) – Size of the queue for pending events and
+summaries before one of the ‘add’ calls forces a flush to disk.
+Default is ten items.</p></li>
+<li><p><strong>flush_secs</strong> (<em>int</em>) – How often, in seconds, to flush the
+pending events and summaries to disk. Default is every two minutes.</p></li>
+<li><p><strong>filename_suffix</strong> (<em>string</em>) – Suffix added to all event filenames in
+the log_dir directory. More details on filename construction in
+tensorboard.summary.writer.event_file_writer.EventFileWriter.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.tensorboard</span> <span class="kn">import</span> <span class="n">SummaryWriter</span>
+
+<span class="c1"># create a summary writer with automatically generated folder name.</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">()</span>
+<span class="c1"># folder location: runs/May04_22-14-54_s-MacBook-Pro.local/</span>
+
+<span class="c1"># create a summary writer using the specified folder name.</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">(</span><span class="s2">&quot;my_experiment&quot;</span><span class="p">)</span>
+<span class="c1"># folder location: my_experiment</span>
+
+<span class="c1"># create a summary writer with comment appended.</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">(</span><span class="n">comment</span><span class="o">=</span><span class="s2">&quot;LR_0.1_BATCH_16&quot;</span><span class="p">)</span>
+<span class="c1"># folder location: runs/May04_22-14-54_s-MacBook-Pro.localLR_0.1_BATCH_16/</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="src.train.utils.dist_utils.DistSummaryWriter.add_figure">
+<code class="sig-name descname">add_figure</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#DistSummaryWriter.add_figure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.DistSummaryWriter.add_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render matplotlib figure into an image and add it to summary.</p>
+<p>Note that this requires the <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tag</strong> (<em>string</em>) – Data identifier</p></li>
+<li><p><strong>figure</strong> (<em>matplotlib.pyplot.figure</em>) – Figure or a list of figures</p></li>
+<li><p><strong>global_step</strong> (<em>int</em>) – Global step value to record</p></li>
+<li><p><strong>close</strong> (<em>bool</em>) – Flag to automatically close the figure</p></li>
+<li><p><strong>walltime</strong> (<em>float</em>) – Optional override default walltime (time.time())
+seconds after epoch of event</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.dist_utils.DistSummaryWriter.add_graph">
+<code class="sig-name descname">add_graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#DistSummaryWriter.add_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.DistSummaryWriter.add_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add graph data to summary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – Model to draw.</p></li>
+<li><p><strong>input_to_model</strong> (<em>torch.Tensor or list of torch.Tensor</em>) – A variable or a tuple of
+variables to be fed.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print graph structure in console.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.dist_utils.DistSummaryWriter.add_histogram">
+<code class="sig-name descname">add_histogram</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#DistSummaryWriter.add_histogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.DistSummaryWriter.add_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add histogram to summary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tag</strong> (<em>string</em>) – Data identifier</p></li>
+<li><p><strong>values</strong> (<em>torch.Tensor, numpy.array, or string/blobname</em>) – Values to build histogram</p></li>
+<li><p><strong>global_step</strong> (<em>int</em>) – Global step value to record</p></li>
+<li><p><strong>bins</strong> (<em>string</em>) – One of {‘tensorflow’,’auto’, ‘fd’, …}. This determines how the bins are made. You can find
+other options in: <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram.html</a></p></li>
+<li><p><strong>walltime</strong> (<em>float</em>) – Optional override default walltime (time.time())
+seconds after epoch of event</p></li>
+</ul>
+</dd>
+</dl>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.tensorboard</span> <span class="kn">import</span> <span class="n">SummaryWriter</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">add_histogram</span><span class="p">(</span><span class="s1">&#39;distribution centers&#39;</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Expected result:</p>
+<a class="reference internal image-reference" href="_static/img/tensorboard/add_histogram.png"><img alt="_static/img/tensorboard/add_histogram.png" src="_static/img/tensorboard/add_histogram.png" /></a>
+</dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.dist_utils.DistSummaryWriter.add_image">
+<code class="sig-name descname">add_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#DistSummaryWriter.add_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.DistSummaryWriter.add_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add image data to summary.</p>
+<p>Note that this requires the <code class="docutils literal notranslate"><span class="pre">pillow</span></code> package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tag</strong> (<em>string</em>) – Data identifier</p></li>
+<li><p><strong>img_tensor</strong> (<em>torch.Tensor, numpy.array, or string/blobname</em>) – Image data</p></li>
+<li><p><strong>global_step</strong> (<em>int</em>) – Global step value to record</p></li>
+<li><p><strong>walltime</strong> (<em>float</em>) – Optional override default walltime (time.time())
+seconds after epoch of event</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Shape:</dt><dd><p>img_tensor: Default is <span class="math notranslate nohighlight">\((3, H, W)\)</span>. You can use <code class="docutils literal notranslate"><span class="pre">torchvision.utils.make_grid()</span></code> to
+convert a batch of tensor into 3xHxW format or call <code class="docutils literal notranslate"><span class="pre">add_images</span></code> and let us do the job.
+Tensor with <span class="math notranslate nohighlight">\((1, H, W)\)</span>, <span class="math notranslate nohighlight">\((H, W)\)</span>, <span class="math notranslate nohighlight">\((H, W, 3)\)</span> is also suitable as long as
+corresponding <code class="docutils literal notranslate"><span class="pre">dataformats</span></code> argument is passed, e.g. <code class="docutils literal notranslate"><span class="pre">CHW</span></code>, <code class="docutils literal notranslate"><span class="pre">HWC</span></code>, <code class="docutils literal notranslate"><span class="pre">HW</span></code>.</p>
+</dd>
+</dl>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.tensorboard</span> <span class="kn">import</span> <span class="n">SummaryWriter</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
+<span class="n">img</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
+
+<span class="n">img_HWC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">img_HWC</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
+<span class="n">img_HWC</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
+
+<span class="n">writer</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">()</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="s1">&#39;my_image&#39;</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># If you have non-default dimension setting, set the dataformats argument.</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="s1">&#39;my_image_HWC&#39;</span><span class="p">,</span> <span class="n">img_HWC</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dataformats</span><span class="o">=</span><span class="s1">&#39;HWC&#39;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Expected result:</p>
+<a class="reference internal image-reference" href="_static/img/tensorboard/add_image.png"><img alt="_static/img/tensorboard/add_image.png" src="_static/img/tensorboard/add_image.png" /></a>
+</dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.dist_utils.DistSummaryWriter.add_scalar">
+<code class="sig-name descname">add_scalar</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#DistSummaryWriter.add_scalar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.DistSummaryWriter.add_scalar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add scalar data to summary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tag</strong> (<em>string</em>) – Data identifier</p></li>
+<li><p><strong>scalar_value</strong> (<em>float or string/blobname</em>) – Value to save</p></li>
+<li><p><strong>global_step</strong> (<em>int</em>) – Global step value to record</p></li>
+<li><p><strong>walltime</strong> (<em>float</em>) – Optional override default walltime (time.time())
+with seconds after epoch of event</p></li>
+</ul>
+</dd>
+</dl>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.tensorboard</span> <span class="kn">import</span> <span class="n">SummaryWriter</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">&#39;y=2x&#39;</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Expected result:</p>
+<a class="reference internal image-reference" href="_static/img/tensorboard/add_scalar.png"><img alt="_static/img/tensorboard/add_scalar.png" src="_static/img/tensorboard/add_scalar.png" /></a>
+</dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.dist_utils.DistSummaryWriter.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#DistSummaryWriter.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.DistSummaryWriter.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.dist_utils.all_gather">
+<code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">all_gather</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#all_gather"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.all_gather" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run all_gather on arbitrary picklable data (not necessarily tensors)
+:Parameters: <strong>data</strong> – any picklable object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of data gathered from each rank</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list[data]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.dist_utils.can_log">
+<code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">can_log</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#can_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.can_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.dist_utils.dist_cat_reduce_tensor">
+<code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">dist_cat_reduce_tensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tensor</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#dist_cat_reduce_tensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.dist_cat_reduce_tensor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.dist_utils.dist_mean_reduce_tensor">
+<code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">dist_mean_reduce_tensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tensor</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#dist_mean_reduce_tensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.dist_mean_reduce_tensor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.dist_utils.dist_print">
+<code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">dist_print</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#dist_print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.dist_print" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.dist_utils.dist_sum_reduce_tensor">
+<code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">dist_sum_reduce_tensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tensor</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#dist_sum_reduce_tensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.dist_sum_reduce_tensor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.dist_utils.dist_tqdm">
+<code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">dist_tqdm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#dist_tqdm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.dist_tqdm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.dist_utils.get_rank">
+<code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">get_rank</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#get_rank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.get_rank" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.dist_utils.get_world_size">
+<code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">get_world_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#get_world_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.get_world_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.dist_utils.is_main_process">
+<code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">is_main_process</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#is_main_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.is_main_process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.dist_utils.synchronize">
+<code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">synchronize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#synchronize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.synchronize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to synchronize (barrier) among all processes when
+using distributed training</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.dist_utils.to_python_float">
+<code class="sig-prename descclassname">src.train.utils.dist_utils.</code><code class="sig-name descname">to_python_float</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/dist_utils.html#to_python_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.dist_utils.to_python_float" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.train.utils.factory">
+<span id="src-train-utils-factory-module"></span><h2>src.train.utils.factory module<a class="headerlink" href="#module-src.train.utils.factory" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="src.train.utils.factory.CosineAnnealingLR">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.utils.factory.</code><code class="sig-name descname">CosineAnnealingLR</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">T_max</span></em>, <em class="sig-param"><span class="n">eta_min</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">warmup</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">warmup_iters</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/factory.html#CosineAnnealingLR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.factory.CosineAnnealingLR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="src.train.utils.factory.CosineAnnealingLR.step">
+<code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">external_iter</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/factory.html#CosineAnnealingLR.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.factory.CosineAnnealingLR.step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.utils.factory.MultiStepLR">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.utils.factory.</code><code class="sig-name descname">MultiStepLR</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">steps</span></em>, <em class="sig-param"><span class="n">gamma</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">iters_per_epoch</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">warmup</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">warmup_iters</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/factory.html#MultiStepLR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.factory.MultiStepLR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="src.train.utils.factory.MultiStepLR.step">
+<code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">external_iter</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/factory.html#MultiStepLR.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.factory.MultiStepLR.step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.factory.get_loss_dict">
+<code class="sig-prename descclassname">src.train.utils.factory.</code><code class="sig-name descname">get_loss_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cfg</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/factory.html#get_loss_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.factory.get_loss_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.factory.get_metric_dict">
+<code class="sig-prename descclassname">src.train.utils.factory.</code><code class="sig-name descname">get_metric_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cfg</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/factory.html#get_metric_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.factory.get_metric_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.factory.get_optimizer">
+<code class="sig-prename descclassname">src.train.utils.factory.</code><code class="sig-name descname">get_optimizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">net</span></em>, <em class="sig-param"><span class="n">cfg</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/factory.html#get_optimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.factory.get_optimizer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.factory.get_scheduler">
+<code class="sig-prename descclassname">src.train.utils.factory.</code><code class="sig-name descname">get_scheduler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">cfg</span></em>, <em class="sig-param"><span class="n">iters_per_epoch</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/factory.html#get_scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.factory.get_scheduler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.train.utils.loss">
+<span id="src-train-utils-loss-module"></span><h2>src.train.utils.loss module<a class="headerlink" href="#module-src.train.utils.loss" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="src.train.utils.loss.OhemCELoss">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.utils.loss.</code><code class="sig-name descname">OhemCELoss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">thresh</span></em>, <em class="sig-param"><span class="n">n_min</span></em>, <em class="sig-param"><span class="n">ignore_lb</span><span class="o">=</span><span class="default_value">255</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/loss.html#OhemCELoss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.loss.OhemCELoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py method">
+<dt id="src.train.utils.loss.OhemCELoss.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">logits</span></em>, <em class="sig-param"><span class="n">labels</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/loss.html#OhemCELoss.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.loss.OhemCELoss.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="src.train.utils.loss.OhemCELoss.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#src.train.utils.loss.OhemCELoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.utils.loss.ParsingRelationDis">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.utils.loss.</code><code class="sig-name descname">ParsingRelationDis</code><a class="reference internal" href="_modules/src/train/utils/loss.html#ParsingRelationDis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.loss.ParsingRelationDis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py method">
+<dt id="src.train.utils.loss.ParsingRelationDis.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/loss.html#ParsingRelationDis.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.loss.ParsingRelationDis.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="src.train.utils.loss.ParsingRelationDis.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#src.train.utils.loss.ParsingRelationDis.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.utils.loss.ParsingRelationLoss">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.utils.loss.</code><code class="sig-name descname">ParsingRelationLoss</code><a class="reference internal" href="_modules/src/train/utils/loss.html#ParsingRelationLoss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.loss.ParsingRelationLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py method">
+<dt id="src.train.utils.loss.ParsingRelationLoss.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">logits</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/loss.html#ParsingRelationLoss.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.loss.ParsingRelationLoss.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="src.train.utils.loss.ParsingRelationLoss.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#src.train.utils.loss.ParsingRelationLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.utils.loss.SoftmaxFocalLoss">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.utils.loss.</code><code class="sig-name descname">SoftmaxFocalLoss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gamma</span></em>, <em class="sig-param"><span class="n">ignore_lb</span><span class="o">=</span><span class="default_value">255</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/loss.html#SoftmaxFocalLoss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.loss.SoftmaxFocalLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py method">
+<dt id="src.train.utils.loss.SoftmaxFocalLoss.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">logits</span></em>, <em class="sig-param"><span class="n">labels</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/loss.html#SoftmaxFocalLoss.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.loss.SoftmaxFocalLoss.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="src.train.utils.loss.SoftmaxFocalLoss.training">
+<code class="sig-name descname">training</code><em class="property">: bool</em><a class="headerlink" href="#src.train.utils.loss.SoftmaxFocalLoss.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.train.utils.metrics">
+<span id="src-train-utils-metrics-module"></span><h2>src.train.utils.metrics module<a class="headerlink" href="#module-src.train.utils.metrics" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="src.train.utils.metrics.AccTopk">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.utils.metrics.</code><code class="sig-name descname">AccTopk</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">background_classes</span></em>, <em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#AccTopk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.AccTopk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="src.train.utils.metrics.AccTopk.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#AccTopk.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.AccTopk.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.metrics.AccTopk.reset">
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#AccTopk.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.AccTopk.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.metrics.AccTopk.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predict</span></em>, <em class="sig-param"><span class="n">target</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#AccTopk.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.AccTopk.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.utils.metrics.Metric_mIoU">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.utils.metrics.</code><code class="sig-name descname">Metric_mIoU</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">class_num</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#Metric_mIoU"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.Metric_mIoU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="src.train.utils.metrics.Metric_mIoU.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#Metric_mIoU.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.Metric_mIoU.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.metrics.Metric_mIoU.get_acc">
+<code class="sig-name descname">get_acc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#Metric_mIoU.get_acc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.Metric_mIoU.get_acc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.metrics.Metric_mIoU.get_miou">
+<code class="sig-name descname">get_miou</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#Metric_mIoU.get_miou"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.Metric_mIoU.get_miou" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.metrics.Metric_mIoU.reset">
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#Metric_mIoU.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.Metric_mIoU.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.metrics.Metric_mIoU.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predict</span></em>, <em class="sig-param"><span class="n">target</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#Metric_mIoU.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.Metric_mIoU.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.utils.metrics.MultiLabelAcc">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.utils.metrics.</code><code class="sig-name descname">MultiLabelAcc</code><a class="reference internal" href="_modules/src/train/utils/metrics.html#MultiLabelAcc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.MultiLabelAcc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="src.train.utils.metrics.MultiLabelAcc.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#MultiLabelAcc.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.MultiLabelAcc.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.metrics.MultiLabelAcc.get_acc">
+<code class="sig-name descname">get_acc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#MultiLabelAcc.get_acc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.MultiLabelAcc.get_acc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.metrics.MultiLabelAcc.reset">
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#MultiLabelAcc.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.MultiLabelAcc.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.train.utils.metrics.MultiLabelAcc.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predict</span></em>, <em class="sig-param"><span class="n">target</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#MultiLabelAcc.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.MultiLabelAcc.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.metrics.converter">
+<code class="sig-prename descclassname">src.train.utils.metrics.</code><code class="sig-name descname">converter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#converter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.converter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.metrics.fast_hist">
+<code class="sig-prename descclassname">src.train.utils.metrics.</code><code class="sig-name descname">fast_hist</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label_pred</span></em>, <em class="sig-param"><span class="n">label_true</span></em>, <em class="sig-param"><span class="n">num_classes</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#fast_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.fast_hist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.metrics.reset_metrics">
+<code class="sig-prename descclassname">src.train.utils.metrics.</code><code class="sig-name descname">reset_metrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metric_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#reset_metrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.reset_metrics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.train.utils.metrics.update_metrics">
+<code class="sig-prename descclassname">src.train.utils.metrics.</code><code class="sig-name descname">update_metrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metric_dict</span></em>, <em class="sig-param"><span class="n">pair_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/utils/metrics.html#update_metrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.utils.metrics.update_metrics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="src.runtime.html" class="btn btn-neutral float-right" title="src.runtime package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="src.train.data.html" class="btn btn-neutral float-left" title="src.train.data namespace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

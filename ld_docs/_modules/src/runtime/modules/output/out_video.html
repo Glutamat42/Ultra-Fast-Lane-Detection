@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.runtime.modules.output.out_video &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.runtime.modules.output.out_video</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.runtime.modules.output.out_video</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="kn">from</span> <span class="nn">src.runtime.modules.output.common</span> <span class="kn">import</span> <span class="n">get_filename_date_string</span><span class="p">,</span> <span class="n">map_x_to_image</span><span class="p">,</span> <span class="n">evaluate_predictions</span>
+<span class="kn">from</span> <span class="nn">src.common.config.global_config</span> <span class="kn">import</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">adv_cfg</span>
+
+
+<div class="viewcode-block" id="get_lane_color"><a class="viewcode-back" href="../../../../../src.runtime.modules.output.html#src.runtime.modules.output.out_video.get_lane_color">[docs]</a><span class="k">def</span> <span class="nf">get_lane_color</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Get a predefined colors depending on i. Colors repeat if i gets to big</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        i: any number, same number -&gt; same color</span>
+
+<span class="sd">    Returns: Tuple containing 3 values, eg (255, 0, 0)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lane_colors</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">lane_colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">5</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="VisualOut"><a class="viewcode-back" href="../../../../../src.runtime.modules.output.html#src.runtime.modules.output.out_video.VisualOut">[docs]</a><span class="k">class</span> <span class="nc">VisualOut</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    provides different visual output types</span>
+
+<span class="sd">    * live video</span>
+<span class="sd">    * record video</span>
+<span class="sd">    * save images</span>
+
+<span class="sd">    visualization can be points or lines</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">enable_live_video</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">video_out_enable_live_video</span><span class="p">,</span>
+            <span class="n">enable_video_export</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">video_out_enable_video_export</span><span class="p">,</span>
+            <span class="n">enable_image_export</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">video_out_enable_image_export</span><span class="p">,</span>
+            <span class="n">enable_line_mode</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">video_out_enable_line_mode</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        used non-basic-cfg values:</span>
+
+<span class="sd">        - cfg.video_out_enable_live_video</span>
+<span class="sd">        - cfg.video_out_enable_video_export</span>
+<span class="sd">        - cfg.video_out_enable_image_export</span>
+<span class="sd">        - cfg.video_out_enable_line_mode</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            enable_live_video: show video</span>
+<span class="sd">            enable_video_export: save as video to disk</span>
+<span class="sd">            enable_image_export: save as image files to disk</span>
+<span class="sd">            enable_line_mode: visualization as lines instead of dots</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_live_video</span> <span class="o">=</span> <span class="n">enable_live_video</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_video_export</span> <span class="o">=</span> <span class="n">enable_video_export</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_image_export</span> <span class="o">=</span> <span class="n">enable_image_export</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_line_mode</span> <span class="o">=</span> <span class="n">enable_line_mode</span>
+
+        <span class="k">if</span> <span class="n">enable_video_export</span><span class="p">:</span>
+            <span class="c1"># init video out</span>
+            <span class="n">fourcc</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="o">*</span><span class="s1">&#39;MJPG&#39;</span><span class="p">)</span>
+            <span class="n">out_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="si">}{</span><span class="n">cfg</span><span class="o">.</span><span class="n">note</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">trained_model</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">get_filename_date_string</span><span class="p">()</span><span class="si">}</span><span class="s1">.avi&#39;</span>
+            <span class="n">out_full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">work_dir</span><span class="p">,</span> <span class="n">out_filename</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">out_full_path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vout</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter</span><span class="p">(</span><span class="n">out_full_path</span><span class="p">,</span> <span class="n">fourcc</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">img_width</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">img_height</span><span class="p">))</span>
+
+<div class="viewcode-block" id="VisualOut.out"><a class="viewcode-back" href="../../../../../src.runtime.modules.output.html#src.runtime.modules.output.out_video.VisualOut.out">[docs]</a>    <span class="k">def</span> <span class="nf">out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">frames</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Generate visual output</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y: network result (list of samples containing probabilities per sample)</span>
+<span class="sd">            names: filenames for y, if empty: frames have to be provided</span>
+<span class="sd">            frames: source frames, if empty: names have to be provided</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">names</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">frames</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;at least frames or names have to be provided&#39;</span><span class="p">)</span>
+        <span class="c1"># iterate over samples</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)):</span>
+            <span class="n">lanes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">map_x_to_image</span><span class="p">(</span><span class="n">evaluate_predictions</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span>  <span class="c1"># get x coordinates based on probabilities</span>
+
+            <span class="k">if</span> <span class="n">frames</span><span class="p">:</span>
+                <span class="n">vis</span> <span class="o">=</span> <span class="n">frames</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">vis</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">data_root</span><span class="p">,</span> <span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+            <span class="k">if</span> <span class="n">vis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;failed to load frame&#39;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lanes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>  <span class="c1"># iterate over lanes</span>
+                <span class="n">lane</span> <span class="o">=</span> <span class="n">lanes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">lane</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># If more than two points found for this lane</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="n">get_lane_color</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lanes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                        <span class="n">img_x</span> <span class="o">=</span> <span class="n">lane</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                        <span class="n">img_y</span> <span class="o">=</span> <span class="n">adv_cfg</span><span class="o">.</span><span class="n">scaled_h_samples</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">img_x</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">2</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_line_mode</span><span class="p">:</span>
+                                <span class="c1"># find all previous points for current lane (in reverse order) that are not -2</span>
+                                <span class="c1"># and store indexes of these points in prev_points</span>
+                                <span class="n">prev_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">lane</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+                                <span class="k">if</span> <span class="n">prev_points</span><span class="p">:</span>
+                                    <span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+                                        <span class="n">vis</span><span class="p">,</span>
+                                        <span class="p">(</span><span class="n">lane</span><span class="p">[</span><span class="n">prev_points</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">adv_cfg</span><span class="o">.</span><span class="n">scaled_h_samples</span><span class="p">[</span><span class="n">prev_points</span><span class="p">[</span><span class="mi">0</span><span class="p">]]),</span>
+                                        <span class="p">(</span><span class="n">img_x</span><span class="p">,</span> <span class="n">img_y</span><span class="p">),</span> <span class="n">color</span><span class="p">,</span>
+                                        <span class="mi">5</span>
+                                    <span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">vis</span><span class="p">,</span> <span class="p">(</span><span class="n">img_x</span><span class="p">,</span> <span class="n">img_y</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_live_video</span><span class="p">:</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s1">&#39;video&#39;</span><span class="p">,</span> <span class="n">vis</span><span class="p">)</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_video_export</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">vis</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_image_export</span><span class="p">:</span>
+                <span class="n">out_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">cfg</span><span class="o">.</span><span class="n">work_dir</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">get_filename_date_string</span><span class="p">()</span><span class="si">}</span><span class="s1">_out&#39;</span><span class="p">,</span> <span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">names</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000000</span><span class="p">)</span>
+                <span class="p">)</span>  <span class="c1"># use current timestamp (nanoseconds) as fallback</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">vis</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

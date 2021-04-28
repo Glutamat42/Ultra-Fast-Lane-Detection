@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Training &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Testing" href="test.html" />
+    <link rel="prev" title="Create a config/profile" href="create_a_profile.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="howtos.html">HOWTOs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#create-dataset">Create dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#train">Train</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#test-and-use-the-model">Test and use the model</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="howtos.html#toc">TOC</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="carla_setup.html">CARLA setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup.html">Project setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generate_dataset_from_carla.html">HOWTO: Generate labeled data from CARLA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="create_dataset.html">HOWTO: Create a dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="create_a_profile.html">Create a config/profile</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Training</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#start-training">Start training</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monitoring">Monitoring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#what-now">What now?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test.html">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html#add-testing-code">Add testing code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html#run-test">Run test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html#visual-test">Visual test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="integrate_into_your_own_project.html">Integrate into your project</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="howtos.html">HOWTOs</a> &raquo;</li>
+        
+      <li>Training</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/howto/train.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="training">
+<h1>Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h1>
+<p>This Howto guides you through training your first model. Before starting with this Howto make sure you already have</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="setup.html"><span class="doc std std-doc">set the project up</span></a></p></li>
+<li><p><a class="reference internal" href="create_dataset.html"><span class="doc std std-doc">a dataset</span></a></p></li>
+<li><p><a class="reference internal" href="create_a_profile.html"><span class="doc std std-doc">created a config</span></a></p></li>
+</ul>
+<p>This Howto can completed by using the sample dataset from “<a class="reference internal" href="create_dataset.html"><span class="doc std std-doc">create a dataset</span></a>”.
+The same dataset (with labels) can be downloaded here:</p>
+<p><a class="reference download internal" download="" href="../_downloads/824c0ddabb9d2b278a89d49423569317/sample_dataset_labeled.zip"><code class="xref download docutils literal notranslate"><span class="pre">sample_dataset.zip</span></code></a></p>
+<div class="section" id="start-training">
+<h2>Start training<a class="headerlink" href="#start-training" title="Permalink to this headline">¶</a></h2>
+<p>We don’t need any further preparations. Make sure your virtual environment/conda is active and start training with the following command:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python ufld.py configs/sample_dataset.py --mode train --epoch <span class="m">5</span>
+</pre></div>
+</div>
+<p>This command loads our config and runs <code class="docutils literal notranslate"><span class="pre">ufld.py</span></code> in training mode. It also sets epoch to 5 which is enough for testing.</p>
+<p>If the following error occurs you don’t have enough VRAM. Lower the batch size until the error goes away. Remember this can also be done temporarily via CLI, e.g. <code class="docutils literal notranslate"><span class="pre">--batch_size</span> <span class="pre">4</span></code>.
+For more information on batch_size see <a class="reference external" href="create_a_profile.html#batch-size">the batch_size section of the config howto</a>.</p>
+</div>
+<div class="section" id="monitoring">
+<h2>Monitoring<a class="headerlink" href="#monitoring" title="Permalink to this headline">¶</a></h2>
+<p>As soon as the training started (and also after the training finished) we can use tensorboard to monitor our network.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tensorboard --logdir /home/user/work_dir/ --bind_all
+</pre></div>
+</div>
+<p>This command calls tensorboard. Set <code class="docutils literal notranslate"><span class="pre">logdir</span></code> to your working directory (see config). <code class="docutils literal notranslate"><span class="pre">bind_all</span></code> allows access for other computers in your network.</p>
+<p>The webinterface can now be opened with <code class="docutils literal notranslate"><span class="pre">http://localhost:6006</span></code></p>
+</div>
+<div class="section" id="what-now">
+<h2>What now?<a class="headerlink" href="#what-now" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Test the net against your testing dataset. See <a class="reference internal" href="test.html"><span class="doc std std-doc">Howto: test</span></a></p></li>
+<li><p>Visualize the results with the help of <a class="reference external" href="../src.runtime.modules.output.html#module-src.runtime.modules.output.out_video">the video output module</a></p></li>
+<li><p>Improve results by optimizing training parameters or dataset</p></li>
+<li><p><a class="reference internal" href="integrate_into_your_own_project.html"><span class="doc std std-doc">Use the model in your own project</span></a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="test.html" class="btn btn-neutral float-right" title="Testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="create_a_profile.html" class="btn btn-neutral float-left" title="Create a config/profile" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

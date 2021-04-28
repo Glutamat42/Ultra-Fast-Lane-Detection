@@ -1,0 +1,555 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.common.config.util &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.common.config.util</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.common.config.util</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">osp</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">Action</span><span class="p">,</span> <span class="n">ArgumentParser</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">abc</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
+
+<span class="kn">from</span> <span class="nn">addict</span> <span class="kn">import</span> <span class="n">Dict</span>
+
+
+<span class="n">BASE_KEY</span> <span class="o">=</span> <span class="s1">&#39;_base_&#39;</span>
+<span class="n">DELETE_KEY</span> <span class="o">=</span> <span class="s1">&#39;_delete_&#39;</span>
+
+
+<div class="viewcode-block" id="ConfigDict"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.util.ConfigDict">[docs]</a><span class="k">class</span> <span class="nc">ConfigDict</span><span class="p">(</span><span class="n">Dict</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__missing__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ConfigDict</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">ex</span> <span class="o">=</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; object has no &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;attribute &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">ex</span> <span class="o">=</span> <span class="n">e</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">raise</span> <span class="n">ex</span></div>
+
+
+<div class="viewcode-block" id="add_args"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.util.add_args">[docs]</a><span class="k">def</span> <span class="nf">add_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--&#39;</span> <span class="o">+</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">k</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--&#39;</span> <span class="o">+</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">k</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--&#39;</span> <span class="o">+</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">k</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--&#39;</span> <span class="o">+</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">k</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">add_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">k</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Iterable</span><span class="p">):</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--&#39;</span> <span class="o">+</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">k</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cannot parse key </span><span class="si">{</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">k</span><span class="si">}</span><span class="s1"> of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span></div>
+
+
+<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.util.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A facility for config and config files.</span>
+<span class="sd">    It supports common file formats as configs: python/json/yaml. The interface</span>
+<span class="sd">    is the same as a dict object and also allows access config values as</span>
+<span class="sd">    attributes.</span>
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; cfg = Config(dict(a=1, b=dict(b1=[0, 1])))</span>
+<span class="sd">        &gt;&gt;&gt; cfg.a</span>
+<span class="sd">        1</span>
+<span class="sd">        &gt;&gt;&gt; cfg.b</span>
+<span class="sd">        {&#39;b1&#39;: [0, 1]}</span>
+<span class="sd">        &gt;&gt;&gt; cfg.b.b1</span>
+<span class="sd">        [0, 1]</span>
+<span class="sd">        &gt;&gt;&gt; cfg = Config.fromfile(&#39;tests/data/config/a.py&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; cfg.filename</span>
+<span class="sd">        &quot;/home/kchen/projects/mmcv/tests/data/config/a.py&quot;</span>
+<span class="sd">        &gt;&gt;&gt; cfg.item4</span>
+<span class="sd">        &#39;test&#39;</span>
+<span class="sd">        &gt;&gt;&gt; cfg</span>
+<span class="sd">        &quot;Config [path: /home/kchen/projects/mmcv/tests/data/config/a.py]: &quot;</span>
+<span class="sd">        &quot;{&#39;item1&#39;: [1, 2], &#39;item2&#39;: {&#39;a&#39;: 0}, &#39;item3&#39;: True, &#39;item4&#39;: &#39;test&#39;}&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_file2dict</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">osp</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.py&#39;</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">temp_config_dir</span><span class="p">:</span>
+                <span class="n">temp_config_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span>
+                    <span class="nb">dir</span><span class="o">=</span><span class="n">temp_config_dir</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.py&#39;</span><span class="p">)</span>
+                <span class="n">temp_config_name</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">temp_config_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="c1"># close temp file</span>
+                <span class="n">temp_config_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span>
+                                <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_config_dir</span><span class="p">,</span> <span class="n">temp_config_name</span><span class="p">))</span>
+                <span class="n">temp_module_name</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">temp_config_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">temp_config_dir</span><span class="p">)</span>
+                <span class="n">mod</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="n">temp_module_name</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">cfg_dict</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">name</span><span class="p">:</span> <span class="n">value</span>
+                    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">mod</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)</span>
+                <span class="p">}</span>
+                <span class="c1"># delete imported module</span>
+                <span class="k">del</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">temp_module_name</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s1">&#39;.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;.yaml&#39;</span><span class="p">,</span> <span class="s1">&#39;.json&#39;</span><span class="p">)):</span>
+            <span class="kn">import</span> <span class="nn">mmcv</span>
+            <span class="n">cfg_dict</span> <span class="o">=</span> <span class="n">mmcv</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;Only py/yml/yaml/json type are supported now!&#39;</span><span class="p">)</span>
+
+        <span class="n">cfg_text</span> <span class="o">=</span> <span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">cfg_text</span> <span class="o">+=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">BASE_KEY</span> <span class="ow">in</span> <span class="n">cfg_dict</span><span class="p">:</span>
+            <span class="n">cfg_dir</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">base_filename</span> <span class="o">=</span> <span class="n">cfg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">BASE_KEY</span><span class="p">)</span>
+            <span class="n">base_filename</span> <span class="o">=</span> <span class="n">base_filename</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">base_filename</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">base_filename</span><span class="p">]</span>
+
+            <span class="n">cfg_dict_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="n">cfg_text_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">base_filename</span><span class="p">:</span>
+                <span class="n">_cfg_dict</span><span class="p">,</span> <span class="n">_cfg_text</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">_file2dict</span><span class="p">(</span><span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+                <span class="n">cfg_dict_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_cfg_dict</span><span class="p">)</span>
+                <span class="n">cfg_text_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_cfg_text</span><span class="p">)</span>
+
+            <span class="n">base_cfg_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cfg_dict_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">base_cfg_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">c</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Duplicate key is not allowed among bases&#39;</span><span class="p">)</span>
+                <span class="n">base_cfg_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+            <span class="n">base_cfg_dict</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">_merge_a_into_b</span><span class="p">(</span><span class="n">cfg_dict</span><span class="p">,</span> <span class="n">base_cfg_dict</span><span class="p">)</span>
+            <span class="n">cfg_dict</span> <span class="o">=</span> <span class="n">base_cfg_dict</span>
+
+            <span class="c1"># merge cfg_text</span>
+            <span class="n">cfg_text_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cfg_text</span><span class="p">)</span>
+            <span class="n">cfg_text</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg_text_list</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cfg_dict</span><span class="p">,</span> <span class="n">cfg_text</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_merge_a_into_b</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="c1"># merge dict `a` into dict `b` (non-inplace). values in `a` will</span>
+        <span class="c1"># overwrite `b`.</span>
+        <span class="c1"># copy first to avoid inplace modification</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">b</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">DELETE_KEY</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1"> in child config cannot inherit from base &#39;</span>
+                        <span class="sa">f</span><span class="s1">&#39;because </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> is a dict in the child config but is of &#39;</span>
+                        <span class="sa">f</span><span class="s1">&#39;type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="si">}</span><span class="s1"> in base config. You may set &#39;</span>
+                        <span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">DELETE_KEY</span><span class="si">}</span><span class="s1">=True` to ignore the base config&#39;</span><span class="p">)</span>
+                <span class="n">b</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">_merge_a_into_b</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">b</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">b</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">b</span>
+
+<div class="viewcode-block" id="Config.fromfile"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.util.Config.fromfile">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">fromfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="n">cfg_dict</span><span class="p">,</span> <span class="n">cfg_text</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">_file2dict</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Config</span><span class="p">(</span><span class="n">cfg_dict</span><span class="p">,</span> <span class="n">cfg_text</span><span class="o">=</span><span class="n">cfg_text</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.auto_argparser"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.util.Config.auto_argparser">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">auto_argparser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate argparser from config file automatically (experimental)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">partial_parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+        <span class="n">partial_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;config file path&#39;</span><span class="p">)</span>
+        <span class="n">cfg_file</span> <span class="o">=</span> <span class="n">partial_parser</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">config</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">cfg_file</span><span class="p">)</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;config file path&#39;</span><span class="p">)</span>
+        <span class="n">add_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parser</span><span class="p">,</span> <span class="n">cfg</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cfg_text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cfg_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cfg_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cfg_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;cfg_dict must be a dict, but &#39;</span>
+                            <span class="sa">f</span><span class="s1">&#39;got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">cfg_dict</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="s1">&#39;_cfg_dict&#39;</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">cfg_dict</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="s1">&#39;_filename&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cfg_text</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">cfg_text</span>
+        <span class="k">elif</span> <span class="n">filename</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="s1">&#39;_text&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pretty_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">indent</span> <span class="o">=</span> <span class="mi">4</span>
+
+        <span class="k">def</span> <span class="nf">_indent</span><span class="p">(</span><span class="n">s_</span><span class="p">,</span> <span class="n">num_spaces</span><span class="p">):</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s_</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">s_</span>
+            <span class="n">first</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="p">[(</span><span class="n">num_spaces</span> <span class="o">*</span> <span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">first</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">s</span>
+            <span class="k">return</span> <span class="n">s</span>
+
+        <span class="k">def</span> <span class="nf">_format_basic_types</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">v_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">v_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">attr_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">v_str</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="n">attr_str</span> <span class="o">=</span> <span class="n">_indent</span><span class="p">(</span><span class="n">attr_str</span><span class="p">,</span> <span class="n">indent</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">attr_str</span>
+
+        <span class="k">def</span> <span class="nf">_format_list</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+            <span class="c1"># check if all items in the list are dict</span>
+            <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">v</span><span class="p">):</span>
+                <span class="n">v_str</span> <span class="o">=</span> <span class="s1">&#39;[</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">v_str</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;dict(</span><span class="si">{</span><span class="n">_indent</span><span class="p">(</span><span class="n">_format_dict</span><span class="p">(</span><span class="n">v_</span><span class="p">),</span> <span class="n">indent</span><span class="p">)</span><span class="si">}</span><span class="s1">),&#39;</span>
+                    <span class="k">for</span> <span class="n">v_</span> <span class="ow">in</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="n">attr_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">v_str</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="n">attr_str</span> <span class="o">=</span> <span class="n">_indent</span><span class="p">(</span><span class="n">attr_str</span><span class="p">,</span> <span class="n">indent</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;]&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">attr_str</span> <span class="o">=</span> <span class="n">_format_basic_types</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">attr_str</span>
+
+        <span class="k">def</span> <span class="nf">_format_dict</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">outest_level</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="n">is_last</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">outest_level</span> <span class="ow">or</span> <span class="n">is_last</span> <span class="k">else</span> <span class="s1">&#39;,&#39;</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="n">v_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">_format_dict</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                    <span class="n">attr_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="si">}</span><span class="s1">=dict(</span><span class="si">{</span><span class="n">v_str</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="n">attr_str</span> <span class="o">=</span> <span class="n">_indent</span><span class="p">(</span><span class="n">attr_str</span><span class="p">,</span> <span class="n">indent</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span> <span class="o">+</span> <span class="n">end</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">attr_str</span> <span class="o">=</span> <span class="n">_format_list</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">+</span> <span class="n">end</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">attr_str</span> <span class="o">=</span> <span class="n">_format_basic_types</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">+</span> <span class="n">end</span>
+
+                <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attr_str</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">r</span>
+
+        <span class="n">cfg_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg_dict</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">_format_dict</span><span class="p">(</span><span class="n">cfg_dict</span><span class="p">,</span> <span class="n">outest_level</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">text</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Config (path: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="si">}</span><span class="s1">): </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg_dict</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg_dict</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg_dict</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg_dict</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg_dict</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg_dict</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg_dict</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Config.dump"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.util.Config.dump">[docs]</a>    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cfg_dict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="s1">&#39;_cfg_dict&#39;</span><span class="p">)</span>
+        <span class="n">format_text</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">cfg_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">format_text</span></div>
+
+<div class="viewcode-block" id="Config.merge_from_dict"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.util.Config.merge_from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">merge_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Merge list into cfg_dict</span>
+<span class="sd">        Merge the dict parsed by MultipleKVAction into this cfg.</span>
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; options = {&#39;model.backbone.depth&#39;: 50,</span>
+<span class="sd">            ...            &#39;model.backbone.with_cp&#39;:True}</span>
+<span class="sd">            &gt;&gt;&gt; cfg = Config(dict(model=dict(backbone=dict(type=&#39;ResNet&#39;))))</span>
+<span class="sd">            &gt;&gt;&gt; cfg.merge_from_dict(options)</span>
+<span class="sd">            &gt;&gt;&gt; cfg_dict = super(Config, self).__getattribute__(&#39;_cfg_dict&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; assert cfg_dict == dict(</span>
+<span class="sd">            ...     model=dict(backbone=dict(depth=50, with_cp=True)))</span>
+<span class="sd">        Args:</span>
+<span class="sd">            options (dict): dict of configs to merge from.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">option_cfg_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">full_key</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">options</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">option_cfg_dict</span>
+            <span class="n">key_list</span> <span class="o">=</span> <span class="n">full_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">subkey</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">d</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">())</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">subkey</span><span class="p">]</span>
+            <span class="n">subkey</span> <span class="o">=</span> <span class="n">key_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">subkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="n">cfg_dict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="s1">&#39;_cfg_dict&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
+            <span class="s1">&#39;_cfg_dict&#39;</span><span class="p">,</span> <span class="n">Config</span><span class="o">.</span><span class="n">_merge_a_into_b</span><span class="p">(</span><span class="n">option_cfg_dict</span><span class="p">,</span> <span class="n">cfg_dict</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="DictAction"><a class="viewcode-back" href="../../../../src.common.config.html#src.common.config.util.DictAction">[docs]</a><span class="k">class</span> <span class="nc">DictAction</span><span class="p">(</span><span class="n">Action</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    argparse action to split an argument into KEY=VALUE form</span>
+<span class="sd">    on the first = and append to a dictionary. List options should</span>
+<span class="sd">    be passed as comma separated values, i.e KEY=V1,V2,V3</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_parse_int_float_bool</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="s1">&#39;false&#39;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span> <span class="k">else</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">option_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">kv</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">kv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_parse_int_float_bool</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">options</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">namespace</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dest</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

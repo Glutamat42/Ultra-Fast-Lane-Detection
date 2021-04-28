@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scripts.reduce_h_samples &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>scripts.reduce_h_samples</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scripts.reduce_h_samples</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+
+<div class="viewcode-block" id="reduce_h_samples"><a class="viewcode-back" href="../../scripts.html#scripts.reduce_h_samples.reduce_h_samples">[docs]</a><span class="k">def</span> <span class="nf">reduce_h_samples</span><span class="p">(</span><span class="n">file_in</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_out</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">keep_h_samples</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot; Reduces the amount of h_samples.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_in: Source labels file</span>
+<span class="sd">        file_out: target labels file</span>
+<span class="sd">        keep_h_samples: array of h_samples to keep (eg [10, 20, 30])</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_in</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">source_data</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+    <span class="n">source_h_samples</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">source_data</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="s1">&#39;h_samples&#39;</span><span class="p">]</span>
+    <span class="n">start_index</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">source_h_samples</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">source_h_samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">keep_h_samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">start_index</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="k">break</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_out</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">source_data</span><span class="p">:</span>
+            <span class="nb">dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+            <span class="n">reduced_lanes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">lane</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;lanes&#39;</span><span class="p">]:</span>
+                <span class="n">reduced_lanes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lane</span><span class="p">[</span><span class="n">start_index</span><span class="p">:</span><span class="n">start_index</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">keep_h_samples</span><span class="p">)])</span>
+
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+                <span class="s1">&#39;lanes&#39;</span><span class="p">:</span> <span class="n">reduced_lanes</span><span class="p">,</span>
+                <span class="s1">&#39;h_samples&#39;</span><span class="p">:</span> <span class="n">keep_h_samples</span><span class="p">,</span>
+                <span class="s1">&#39;raw_file&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;raw_file&#39;</span><span class="p">]</span>
+            <span class="p">})</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">reduce_h_samples</span><span class="p">(</span><span class="s1">&#39;/home/markus/OneDrive/Projekt_-_Fast_Lane_Detection/Datensätze/Datensatz03/train_labels.json&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;/home/markus/OneDrive/Projekt_-_Fast_Lane_Detection/Datensätze/Datensatz03/train_labels_short.json&#39;</span><span class="p">,</span>
+                     <span class="p">[</span><span class="mi">380</span><span class="p">,</span> <span class="mi">390</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">410</span><span class="p">,</span> <span class="mi">420</span><span class="p">,</span> <span class="mi">430</span><span class="p">,</span> <span class="mi">440</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">460</span><span class="p">,</span> <span class="mi">470</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">490</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">510</span><span class="p">,</span> <span class="mi">520</span><span class="p">,</span> <span class="mi">530</span><span class="p">,</span> <span class="mi">540</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">560</span><span class="p">,</span>
+                      <span class="mi">570</span><span class="p">,</span> <span class="mi">580</span><span class="p">,</span> <span class="mi">590</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">610</span><span class="p">,</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">630</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">660</span><span class="p">,</span> <span class="mi">670</span><span class="p">,</span> <span class="mi">680</span><span class="p">,</span> <span class="mi">690</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">710</span><span class="p">])</span>
+    <span class="n">reduce_h_samples</span><span class="p">(</span><span class="s1">&#39;/home/markus/OneDrive/Projekt_-_Fast_Lane_Detection/Datensätze/Datensatz03/test.json&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;/home/markus/OneDrive/Projekt_-_Fast_Lane_Detection/Datensätze/Datensatz03/test_short.json&#39;</span><span class="p">,</span>
+                     <span class="p">[</span><span class="mi">380</span><span class="p">,</span> <span class="mi">390</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">410</span><span class="p">,</span> <span class="mi">420</span><span class="p">,</span> <span class="mi">430</span><span class="p">,</span> <span class="mi">440</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">460</span><span class="p">,</span> <span class="mi">470</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">490</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">510</span><span class="p">,</span> <span class="mi">520</span><span class="p">,</span> <span class="mi">530</span><span class="p">,</span> <span class="mi">540</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">560</span><span class="p">,</span>
+                      <span class="mi">570</span><span class="p">,</span> <span class="mi">580</span><span class="p">,</span> <span class="mi">590</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">610</span><span class="p">,</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">630</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">660</span><span class="p">,</span> <span class="mi">670</span><span class="p">,</span> <span class="mi">680</span><span class="p">,</span> <span class="mi">690</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">710</span><span class="p">])</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

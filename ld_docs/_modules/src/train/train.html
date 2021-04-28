@@ -1,0 +1,357 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.train.train &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.train.train</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.train.train</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">src.train.utils.common</span> <span class="kn">import</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">cp_projects</span><span class="p">,</span> <span class="n">save_model</span>
+<span class="kn">from</span> <span class="nn">src.train.utils.dist_utils</span> <span class="kn">import</span> <span class="n">dist_tqdm</span><span class="p">,</span> <span class="n">dist_print</span>
+<span class="kn">from</span> <span class="nn">src.train.utils.factory</span> <span class="kn">import</span> <span class="n">get_optimizer</span><span class="p">,</span> <span class="n">get_scheduler</span><span class="p">,</span> <span class="n">get_metric_dict</span><span class="p">,</span> <span class="n">get_loss_dict</span>
+<span class="kn">from</span> <span class="nn">src.common.config</span> <span class="kn">import</span> <span class="n">global_config</span>
+
+<span class="kn">import</span> <span class="nn">torch</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">src.common.model.model</span> <span class="kn">import</span> <span class="n">parsingNet</span>
+<span class="kn">from</span> <span class="nn">src.train.data.dataloader</span> <span class="kn">import</span> <span class="n">get_train_loader</span>
+
+<span class="kn">from</span> <span class="nn">src.common.config.global_config</span> <span class="kn">import</span> <span class="n">adv_cfg</span>
+<span class="kn">from</span> <span class="nn">src.train.utils.metrics</span> <span class="kn">import</span> <span class="n">update_metrics</span><span class="p">,</span> <span class="n">reset_metrics</span>
+
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<div class="viewcode-block" id="inference"><a class="viewcode-back" href="../../../src.train.html#src.train.train.inference">[docs]</a><span class="k">def</span> <span class="nf">inference</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">data_label</span><span class="p">,</span> <span class="n">use_aux</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">use_aux</span><span class="p">:</span>
+        <span class="n">img</span><span class="p">,</span> <span class="n">cls_label</span><span class="p">,</span> <span class="n">seg_label</span> <span class="o">=</span> <span class="n">data_label</span>
+        <span class="n">img</span><span class="p">,</span> <span class="n">cls_label</span><span class="p">,</span> <span class="n">seg_label</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">cls_label</span><span class="o">.</span><span class="n">long</span><span class="p">()</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">seg_label</span><span class="o">.</span><span class="n">long</span><span class="p">()</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="n">cls_out</span><span class="p">,</span> <span class="n">seg_out</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;cls_out&#39;</span><span class="p">:</span> <span class="n">cls_out</span><span class="p">,</span> <span class="s1">&#39;cls_label&#39;</span><span class="p">:</span> <span class="n">cls_label</span><span class="p">,</span> <span class="s1">&#39;seg_out&#39;</span><span class="p">:</span> <span class="n">seg_out</span><span class="p">,</span> <span class="s1">&#39;seg_label&#39;</span><span class="p">:</span> <span class="n">seg_label</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">img</span><span class="p">,</span> <span class="n">cls_label</span> <span class="o">=</span> <span class="n">data_label</span>
+        <span class="n">img</span><span class="p">,</span> <span class="n">cls_label</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">cls_label</span><span class="o">.</span><span class="n">long</span><span class="p">()</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="n">cls_out</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;cls_out&#39;</span><span class="p">:</span> <span class="n">cls_out</span><span class="p">,</span> <span class="s1">&#39;cls_label&#39;</span><span class="p">:</span> <span class="n">cls_label</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="resolve_val_data"><a class="viewcode-back" href="../../../src.train.html#src.train.train.resolve_val_data">[docs]</a><span class="k">def</span> <span class="nf">resolve_val_data</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">use_aux</span><span class="p">):</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;cls_out&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;cls_out&#39;</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">use_aux</span><span class="p">:</span>
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;seg_out&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;seg_out&#39;</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="calc_loss"><a class="viewcode-back" href="../../../src.train.html#src.train.train.calc_loss">[docs]</a><span class="k">def</span> <span class="nf">calc_loss</span><span class="p">(</span><span class="n">loss_dict</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">global_step</span><span class="p">):</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">loss_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])):</span>
+
+        <span class="n">data_src</span> <span class="o">=</span> <span class="n">loss_dict</span><span class="p">[</span><span class="s1">&#39;data_src&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">datas</span> <span class="o">=</span> <span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="n">src</span><span class="p">]</span> <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="n">data_src</span><span class="p">]</span>
+
+        <span class="n">loss_cur</span> <span class="o">=</span> <span class="n">loss_dict</span><span class="p">[</span><span class="s1">&#39;op&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">](</span><span class="o">*</span><span class="n">datas</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">global_step</span> <span class="o">%</span> <span class="mi">20</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">&#39;loss/&#39;</span> <span class="o">+</span> <span class="n">loss_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">loss_cur</span><span class="p">,</span> <span class="n">global_step</span><span class="p">)</span>
+
+        <span class="n">loss</span> <span class="o">+=</span> <span class="n">loss_cur</span> <span class="o">*</span> <span class="n">loss_dict</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">loss</span></div>
+
+
+<div class="viewcode-block" id="train"><a class="viewcode-back" href="../../../src.train.html#src.train.train.train">[docs]</a><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">data_loader</span><span class="p">,</span> <span class="n">loss_dict</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">metric_dict</span><span class="p">,</span> <span class="n">use_aux</span><span class="p">):</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">progress_bar</span> <span class="o">=</span> <span class="n">dist_tqdm</span><span class="p">(</span><span class="n">data_loader</span><span class="p">)</span>
+    <span class="n">t_data_0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">b_idx</span><span class="p">,</span> <span class="n">data_label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">progress_bar</span><span class="p">):</span>
+        <span class="n">t_data_1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">reset_metrics</span><span class="p">(</span><span class="n">metric_dict</span><span class="p">)</span>
+        <span class="n">global_step</span> <span class="o">=</span> <span class="n">epoch</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_loader</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_idx</span>
+
+        <span class="n">t_net_0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">inference</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">data_label</span><span class="p">,</span> <span class="n">use_aux</span><span class="p">)</span>
+
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">calc_loss</span><span class="p">(</span><span class="n">loss_dict</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">global_step</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">global_step</span><span class="p">)</span>
+        <span class="n">t_net_1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="n">resolve_val_data</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">use_aux</span><span class="p">)</span>
+
+        <span class="n">update_metrics</span><span class="p">(</span><span class="n">metric_dict</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">global_step</span> <span class="o">%</span> <span class="mi">20</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">me_name</span><span class="p">,</span> <span class="n">me_op</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;op&#39;</span><span class="p">]):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">&#39;metric/&#39;</span> <span class="o">+</span> <span class="n">me_name</span><span class="p">,</span> <span class="n">me_op</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">global_step</span><span class="o">=</span><span class="n">global_step</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="s1">&#39;meta/lr&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;lr&#39;</span><span class="p">],</span> <span class="n">global_step</span><span class="o">=</span><span class="n">global_step</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">progress_bar</span><span class="p">,</span> <span class="s1">&#39;set_postfix&#39;</span><span class="p">):</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">me_name</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">me_op</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">for</span> <span class="n">me_name</span><span class="p">,</span> <span class="n">me_op</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;op&#39;</span><span class="p">])}</span>
+            <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">float</span><span class="p">(</span><span class="n">loss</span><span class="p">),</span>
+                                     <span class="n">data_time</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">float</span><span class="p">(</span><span class="n">t_data_1</span> <span class="o">-</span> <span class="n">t_data_0</span><span class="p">),</span>
+                                     <span class="n">net_time</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">float</span><span class="p">(</span><span class="n">t_net_1</span> <span class="o">-</span> <span class="n">t_net_0</span><span class="p">),</span>
+                                     <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">t_data_0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../src.train.html#src.train.train.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">global_config</span><span class="o">.</span><span class="n">cfg</span>
+
+    <span class="n">work_dir</span> <span class="o">=</span> <span class="n">adv_cfg</span><span class="o">.</span><span class="n">train_dir</span>
+
+    <span class="n">distributed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="s1">&#39;WORLD_SIZE&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+        <span class="n">distributed</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;WORLD_SIZE&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">distributed</span><span class="p">:</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">set_device</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">local_rank</span><span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;nccl&#39;</span><span class="p">,</span> <span class="n">init_method</span><span class="o">=</span><span class="s1">&#39;env://&#39;</span><span class="p">)</span>
+    <span class="n">dist_print</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;[%Y/%m/</span><span class="si">%d</span><span class="s1"> %H:%M:%S]&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; start training...&#39;</span><span class="p">)</span>
+    <span class="n">dist_print</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">cfg</span><span class="o">.</span><span class="n">backbone</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;18&#39;</span><span class="p">,</span> <span class="s1">&#39;34&#39;</span><span class="p">,</span> <span class="s1">&#39;50&#39;</span><span class="p">,</span> <span class="s1">&#39;101&#39;</span><span class="p">,</span> <span class="s1">&#39;152&#39;</span><span class="p">,</span> <span class="s1">&#39;50next&#39;</span><span class="p">,</span> <span class="s1">&#39;101next&#39;</span><span class="p">,</span> <span class="s1">&#39;50wide&#39;</span><span class="p">,</span> <span class="s1">&#39;101wide&#39;</span><span class="p">]</span>
+
+    <span class="n">train_loader</span> <span class="o">=</span> <span class="n">get_train_loader</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">data_root</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">griding_num</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">use_aux</span><span class="p">,</span> <span class="n">distributed</span><span class="p">,</span>
+                                    <span class="n">cfg</span><span class="o">.</span><span class="n">num_lanes</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">train_gt</span><span class="p">)</span>
+    <span class="n">cls_num_per_lane</span> <span class="o">=</span> <span class="n">adv_cfg</span><span class="o">.</span><span class="n">cls_num_per_lane</span>
+
+    <span class="n">net</span> <span class="o">=</span> <span class="n">parsingNet</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">backbone</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">backbone</span><span class="p">,</span>
+                     <span class="n">cls_dim</span><span class="o">=</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">griding_num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cls_num_per_lane</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">num_lanes</span><span class="p">),</span> <span class="n">use_aux</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">use_aux</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">distributed</span><span class="p">:</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">parallel</span><span class="o">.</span><span class="n">DistributedDataParallel</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">device_ids</span><span class="o">=</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">local_rank</span><span class="p">])</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">get_optimizer</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">finetune</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dist_print</span><span class="p">(</span><span class="s1">&#39;finetune from &#39;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">finetune</span><span class="p">)</span>
+        <span class="n">state_all</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">finetune</span><span class="p">)[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span>
+        <span class="n">state_clip</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># only use backbone parameters</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">state_all</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s1">&#39;model&#39;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
+                <span class="n">state_clip</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">net</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_clip</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">resume</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dist_print</span><span class="p">(</span><span class="s1">&#39;==&gt; Resume model from &#39;</span> <span class="o">+</span> <span class="n">cfg</span><span class="o">.</span><span class="n">resume</span><span class="p">)</span>
+        <span class="n">resume_dict</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">resume</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+        <span class="n">net</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">resume_dict</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s1">&#39;optimizer&#39;</span> <span class="ow">in</span> <span class="n">resume_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">resume_dict</span><span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">])</span>
+        <span class="n">resume_epoch</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">resume</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">resume_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">scheduler</span> <span class="o">=</span> <span class="n">get_scheduler</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">))</span>
+    <span class="n">dist_print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">))</span>
+    <span class="n">metric_dict</span> <span class="o">=</span> <span class="n">get_metric_dict</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+    <span class="n">loss_dict</span> <span class="o">=</span> <span class="n">get_loss_dict</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="n">work_dir</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">on_train_copy_project_to_out_dir</span><span class="p">:</span>
+        <span class="n">cp_projects</span><span class="p">(</span><span class="n">work_dir</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">resume_epoch</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">epoch</span><span class="p">):</span>
+        <span class="n">train</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">loss_dict</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">metric_dict</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">use_aux</span><span class="p">)</span>
+
+        <span class="n">save_model</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">work_dir</span><span class="p">,</span> <span class="n">distributed</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

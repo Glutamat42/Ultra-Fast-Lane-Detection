@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>configs namespace &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scripts namespace" href="scripts.html" />
+    <link rel="prev" title="src.common.model namespace" href="src.common.model.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="src.train.html">src.train package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.runtime.html">src.runtime package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html">src.common package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">configs namespace</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#h-samples">h_samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mode">mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-configs.default">default configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cli-help">CLI help</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Code</a> &raquo;</li>
+        
+      <li>configs namespace</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/configs.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configs-namespace">
+<h1>configs namespace<a class="headerlink" href="#configs-namespace" title="Permalink to this headline">¶</a></h1>
+<p>All available parameters with their default values are listed below. They are sorted alphabetically.
+Another way to see all options (besides h_samples) is by running <code class="docutils literal notranslate"><span class="pre">ufld.py</span> <span class="pre">--help</span></code> (output is below on this page),
+where the options are grouped.</p>
+<div class="section" id="h-samples">
+<h2>h_samples<a class="headerlink" href="#h-samples" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference external" href="./howto/create_a_profile.html#h-samples">HOWTO: Create dataset - labels file specification</a> for more information.</p>
+</div>
+<div class="section" id="mode">
+<h2>mode<a class="headerlink" href="#mode" title="Permalink to this headline">¶</a></h2>
+<p>This application provides two modes it can be run with.
+<code class="docutils literal notranslate"><span class="pre">train</span></code> for training a model and <code class="docutils literal notranslate"><span class="pre">runtime</span></code> for everything “after” training like testing, validation or production use.</p>
+<p>There are also some special modes. They also define one of the basic modes (the current special modes are all using runtime), but additionally override some other configs.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">test</span></code>: Short hand to test a model<br />
+set input to images and output to test</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">preview</span></code>: Short hand to show a life video of the net’s predictions<br />
+set input to images, output to video and enable live video</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prod</span></code>: Short hadn for production mode<br />
+set input to camera and output to prod</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">benchmark</span></code>: Short hand to benchmark<br />
+set input to images and output to json (the simplest output module) and enables measure_time</p></li>
+</ul>
+</div>
+<div class="section" id="module-configs.default">
+<span id="default-configuration"></span><h2>default configuration<a class="headerlink" href="#module-configs.default" title="Permalink to this headline">¶</a></h2>
+<p>Default values for all config options</p>
+<p>IMPORTANT: Changes to the values of the default config will probably brick existing configs!</p>
+<dl class="py data">
+<dt id="configs.default.backbone">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">backbone</code><em class="property">: str</em><em class="property"> = '18'</em><a class="headerlink" href="#configs.default.backbone" title="Permalink to this definition">¶</a></dt>
+<dd><p>define which resnet backbone to use, allowed values - [‘18’, ‘34’, ‘50’, ‘101’, ‘152’, ‘50next’, ‘101next’, ‘50wide’, ‘101wide’]</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.batch_size">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">batch_size</code><em class="property">: int</em><em class="property"> = 4</em><a class="headerlink" href="#configs.default.batch_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of samples to process in one batch</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.camera_input_cam_number">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">camera_input_cam_number</code><em class="property">: int</em><em class="property"> = 0</em><a class="headerlink" href="#configs.default.camera_input_cam_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of your camera</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.data_root">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">data_root</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#configs.default.data_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>absolute path to root directory of your dataset</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.dataset">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">dataset</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#configs.default.dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>dataset name</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.epoch">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">epoch</code><em class="property">: int</em><em class="property"> = 100</em><a class="headerlink" href="#configs.default.epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of epochs to train</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.griding_num">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">griding_num</code><em class="property">: int</em><em class="property"> = 100</em><a class="headerlink" href="#configs.default.griding_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>x resolution of nn, just like h_samples are the y resolution</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.h_samples">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">h_samples</code><em class="property">: List<span class="p">[</span>float<span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#configs.default.h_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>relative height of y coordinates between 0 and 1. This is required to support different img_heights.
+initialize this entry with something like: <cite>[x / 720 for x in range(380, 711, 10)]</cite>.</p>
+<p>to access the correct h_samples for your resolution you can use something like
+[int(round(x*img_height)) for x in h_samples]</p>
+<p>see documentation for more infos</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.img_height">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">img_height</code><em class="property">: int</em><em class="property"> = 720</em><a class="headerlink" href="#configs.default.img_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>input image height or desired height, depending on input module. Some input modules of the runtime module (e.g. screencap) might resize their actual input res to the values specified here</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.img_width">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">img_width</code><em class="property">: int</em><em class="property"> = 1280</em><a class="headerlink" href="#configs.default.img_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>input image width or desired width, depending on input module. Some input modules of the runtime module (e.g. screencap) might resize their actual input res to the values specified here</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.input_mode">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">input_mode</code><em class="property">: str</em><em class="property"> = 'images'</em><a class="headerlink" href="#configs.default.input_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>specifies input module</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.learning_rate">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">learning_rate</code><em class="property">: float</em><em class="property"> = 0.0004</em><a class="headerlink" href="#configs.default.learning_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>initial learning rate</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.local_rank">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">local_rank</code><em class="property"> = None</em><a class="headerlink" href="#configs.default.local_rank" title="Permalink to this definition">¶</a></dt>
+<dd><p>set via cli, required if using distributed learning (which i am not supporting, but also did not remove related code by purpose)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.measure_time">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">measure_time</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#configs.default.measure_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>enable speed measurement</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.note">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">note</code><em class="property">: str</em><em class="property"> = ''</em><a class="headerlink" href="#configs.default.note" title="Permalink to this definition">¶</a></dt>
+<dd><p>suffix for working directory (probably good to give them a rememberable name</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.num_lanes">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">num_lanes</code><em class="property">: int</em><em class="property"> = 4</em><a class="headerlink" href="#configs.default.num_lanes" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of lanes</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.on_train_copy_project_to_out_dir">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">on_train_copy_project_to_out_dir</code><em class="property">: bool</em><em class="property"> = True</em><a class="headerlink" href="#configs.default.on_train_copy_project_to_out_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>define whether the project project directory is copied to the output directory</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.optimizer">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">optimizer</code><em class="property">: str</em><em class="property"> = 'Adam'</em><a class="headerlink" href="#configs.default.optimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>which optimizer to use, valid values are [‘SGD’,’Adam’]</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.output_mode">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">output_mode</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = ['test']</em><a class="headerlink" href="#configs.default.output_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>specifies output module, can define multiple modules by using this parameter multiple times. Using multiple out-modules might decrease performance significantly</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.resume">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">resume</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#configs.default.resume" title="Permalink to this definition">¶</a></dt>
+<dd><p>absolute path of existing model; continue training this model</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.screencap_enable_image_forwarding">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">screencap_enable_image_forwarding</code><em class="property">: bool</em><em class="property"> = True</em><a class="headerlink" href="#configs.default.screencap_enable_image_forwarding" title="Permalink to this definition">¶</a></dt>
+<dd><p>allows disabling image forwarding. While this will probably improve performance for this input it will prevent you from using most out_modules as also no input_file (with paths to frames on disk) is available in this module</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.screencap_recording_area">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">screencap_recording_area</code><em class="property">: List<span class="p">[</span>int<span class="p">]</span></em><em class="property"> = [0, 0, 1920, 1080]</em><a class="headerlink" href="#configs.default.screencap_recording_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>x (left), y(top), w, h</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>position and size of recording area</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.test_txt">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">test_txt</code><em class="property">: str</em><em class="property"> = 'test.txt'</em><a class="headerlink" href="#configs.default.test_txt" title="Permalink to this definition">¶</a></dt>
+<dd><p>testing index file</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.test_validation_data">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">test_validation_data</code><em class="property">: str</em><em class="property"> = 'test.json'</em><a class="headerlink" href="#configs.default.test_validation_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>file containing labels for test data to validate test results</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.train_gt">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">train_gt</code><em class="property">: str</em><em class="property"> = 'train_gt.txt'</em><a class="headerlink" href="#configs.default.train_gt" title="Permalink to this definition">¶</a></dt>
+<dd><p>training index file</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.train_img_height">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">train_img_height</code><em class="property">: int</em><em class="property"> = 288</em><a class="headerlink" href="#configs.default.train_img_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>resolution the neural network is working with</p>
+<p>untested, changing these values might not work as expected. If changed use a multiple of 8
+some (possibly) relations in source code are unclear and might not be adjusted correctly</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.train_img_width">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">train_img_width</code><em class="property">: int</em><em class="property"> = 800</em><a class="headerlink" href="#configs.default.train_img_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>resolution the neural network is working with</p>
+<p>untested, changing these values might not work as expected. If changed use a multiple of 8
+some (possibly) relations in source code are unclear and might not be adjusted correctly</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.trained_model">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">trained_model</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#configs.default.trained_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>load trained model and use it for runtime</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.use_aux">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">use_aux</code><em class="property">: bool</em><em class="property"> = True</em><a class="headerlink" href="#configs.default.use_aux" title="Permalink to this definition">¶</a></dt>
+<dd><p>adding extra segmentation to improve training, read the ufld paper for more details</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.video_input_file">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">video_input_file</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#configs.default.video_input_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>full filepath to video file you want to use as input</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.video_out_enable_image_export">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">video_out_enable_image_export</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#configs.default.video_out_enable_image_export" title="Permalink to this definition">¶</a></dt>
+<dd><p>enable/disable export to images (like video, but as jpegs)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.video_out_enable_line_mode">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">video_out_enable_line_mode</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#configs.default.video_out_enable_line_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>enable/disable visualize as lines instead of points</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.video_out_enable_live_video">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">video_out_enable_live_video</code><em class="property">: bool</em><em class="property"> = True</em><a class="headerlink" href="#configs.default.video_out_enable_live_video" title="Permalink to this definition">¶</a></dt>
+<dd><p>enable/disable live preview</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.video_out_enable_video_export">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">video_out_enable_video_export</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#configs.default.video_out_enable_video_export" title="Permalink to this definition">¶</a></dt>
+<dd><p>enable/disable export to video file</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="configs.default.work_dir">
+<code class="sig-prename descclassname">configs.default.</code><code class="sig-name descname">work_dir</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#configs.default.work_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>every output will be written here</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>absolute path to working directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="cli-help">
+<h2>CLI help<a class="headerlink" href="#cli-help" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>optional arguments:
+-h, --help            show this help message and exit
+
+basic switches, these are always needed:
+config                path to config file
+--mode                Basic modes: train, runtime; special modes: test, preview, prod, benchmark
+--dataset             dataset name, can be any string
+--data_root           absolute path to root directory of your dataset
+--batch_size          number of samples to process in one batch
+--backbone            define which resnet backbone to use, allowed values: [&#39;18&#39;, &#39;34&#39;, &#39;50&#39;, &#39;101&#39;, &#39;152&#39;, &#39;50next&#39;, &#39;101next&#39;, &#39;50wide&#39;, &#39;101wide&#39;]
+--griding_num         x resolution of nn, just like h_samples are the y resolution
+--note                suffix for working directory (probably good to give them a rememberable name
+--work_dir            working directory: every output will be written here
+--num_lanes           number of lanes
+--img_height          height of input images
+--img_width           width of input images
+--train_img_height    height of image which will be passed to nn; !this option is untested and might not work!
+--train_img_width     width of image which will be passed to nn; !this option is untested and might not work!
+
+training:
+these switches are only used for training
+
+--use_aux             used to improve training, should be disabled during runtime (independent of this config)
+--local_rank
+--epoch               number of epochs to train
+--optimizer
+--learning_rate
+--weight_decay
+--momentum
+--scheduler
+--steps  [ ...]
+--gamma
+--warmup
+--warmup_iters
+--sim_loss_w
+--shp_loss_w
+--finetune
+--resume              path of existing model; continue training this model
+--train_gt            training index file (train_gt.txt)
+--on_train_copy_project_to_out_dir
+                      define whether the project project directory is copied to the output directory
+
+runtime:
+these switches are only used in the runtime module
+
+--trained_model       load trained model and use it for runtime
+--output_mode         specifies output module, can define multiple modules by using this parameter multiple times. Using multiple out-modules might decrease performance significantly
+--input_mode          specifies input module
+--measure_time        enable speed measurement
+--test_txt            testing index file (test.txt)
+
+input modules:
+with these options you can configure the input modules. Each module may have its own config switches
+
+--video_input_file    full filepath to video file you want to use as input
+--camera_input_cam_number
+                      number of your camera
+--screencap_recording_area  [ ...]
+                      position and size of recording area: x,y,w,h
+--screencap_enable_image_forwarding
+                      allows disabling image forwarding. While this will probably improve performance for this input it will prevent you from using most out_modules as also no input_file (with paths to frames on disk) is available in this module
+
+output modules:
+with these options you can configure the output modules. Each module may have its own config switches
+
+--test_validation_data
+                      file containing labels for test data to validate test results
+--video_out_enable_live_video
+                      enable/disable live preview
+--video_out_enable_video_export
+                      enable/disable export to video file
+--video_out_enable_image_export
+                      enable/disable export to images (like video, but as jpegs)
+--video_out_enable_line_mode
+                      enable/disable visualize as lines instead of points
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="scripts.html" class="btn btn-neutral float-right" title="scripts namespace" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="src.common.model.html" class="btn btn-neutral float-left" title="src.common.model namespace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

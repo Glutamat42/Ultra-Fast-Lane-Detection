@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.train.data namespace &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.train.utils namespace" href="src.train.utils.html" />
+    <link rel="prev" title="src.train package" href="src.train.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.train.html">src.train package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="src.train.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">src.train.data namespace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.train.utils.html">src.train.utils namespace</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.train.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.train.html#module-src.train.train">src.train.train module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.train.html#module-src.train">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.runtime.html">src.runtime package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html">src.common package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs.html">configs namespace</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Code</a> &raquo;</li>
+        
+          <li><a href="src.train.html">src.train package</a> &raquo;</li>
+        
+      <li>src.train.data namespace</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/src.train.data.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="src-train-data-namespace">
+<h1>src.train.data namespace<a class="headerlink" href="#src-train-data-namespace" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.train.data.dataloader">
+<span id="src-train-data-dataloader-module"></span><h2>src.train.data.dataloader module<a class="headerlink" href="#module-src.train.data.dataloader" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="src.train.data.dataloader.get_train_loader">
+<code class="sig-prename descclassname">src.train.data.dataloader.</code><code class="sig-name descname">get_train_loader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">batch_size</span></em>, <em class="sig-param"><span class="n">data_root</span></em>, <em class="sig-param"><span class="n">griding_num</span></em>, <em class="sig-param"><span class="n">use_aux</span></em>, <em class="sig-param"><span class="n">distributed</span></em>, <em class="sig-param"><span class="n">num_lanes</span></em>, <em class="sig-param"><span class="n">train_gt</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/data/dataloader.html#get_train_loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.dataloader.get_train_loader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.train.data.dataset">
+<span id="src-train-data-dataset-module"></span><h2>src.train.data.dataset module<a class="headerlink" href="#module-src.train.data.dataset" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="src.train.data.dataset.LaneClsDataset">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.data.dataset.</code><code class="sig-name descname">LaneClsDataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">list_path</span></em>, <em class="sig-param"><span class="n">img_transform</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target_transform</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">simu_transform</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">griding_num</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">load_name</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">row_anchor</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">use_aux</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">segment_transform</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">num_lanes</span><span class="o">=</span><span class="default_value">4</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/data/dataset.html#LaneClsDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.dataset.LaneClsDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.dataset.Dataset</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.train.data.dataset.loader_func">
+<code class="sig-prename descclassname">src.train.data.dataset.</code><code class="sig-name descname">loader_func</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/data/dataset.html#loader_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.dataset.loader_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.train.data.mytransforms">
+<span id="src-train-data-mytransforms-module"></span><h2>src.train.data.mytransforms module<a class="headerlink" href="#module-src.train.data.mytransforms" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="src.train.data.mytransforms.Compose2">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.data.mytransforms.</code><code class="sig-name descname">Compose2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transforms</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/data/mytransforms.html#Compose2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.mytransforms.Compose2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.data.mytransforms.DeNormalize">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.data.mytransforms.</code><code class="sig-name descname">DeNormalize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mean</span></em>, <em class="sig-param"><span class="n">std</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/data/mytransforms.html#DeNormalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.mytransforms.DeNormalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.data.mytransforms.FreeScale">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.data.mytransforms.</code><code class="sig-name descname">FreeScale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">size</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/data/mytransforms.html#FreeScale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.mytransforms.FreeScale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.data.mytransforms.FreeScaleMask">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.data.mytransforms.</code><code class="sig-name descname">FreeScaleMask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">size</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/data/mytransforms.html#FreeScaleMask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.mytransforms.FreeScaleMask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.data.mytransforms.MaskToTensor">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.data.mytransforms.</code><code class="sig-name descname">MaskToTensor</code><a class="reference internal" href="_modules/src/train/data/mytransforms.html#MaskToTensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.mytransforms.MaskToTensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.data.mytransforms.RandomLROffsetLABEL">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.data.mytransforms.</code><code class="sig-name descname">RandomLROffsetLABEL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">max_offset</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/data/mytransforms.html#RandomLROffsetLABEL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.mytransforms.RandomLROffsetLABEL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.data.mytransforms.RandomRotate">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.data.mytransforms.</code><code class="sig-name descname">RandomRotate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angle</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/data/mytransforms.html#RandomRotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.mytransforms.RandomRotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Crops the given PIL.Image at a random location to have a region of
+the given size. size can be a tuple (target_height, target_width)
+or an integer, in which case the target will be of a square shape (size, size)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.data.mytransforms.RandomUDoffsetLABEL">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.data.mytransforms.</code><code class="sig-name descname">RandomUDoffsetLABEL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">max_offset</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/data/mytransforms.html#RandomUDoffsetLABEL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.mytransforms.RandomUDoffsetLABEL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="src.train.data.mytransforms.Scale">
+<em class="property">class </em><code class="sig-prename descclassname">src.train.data.mytransforms.</code><code class="sig-name descname">Scale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">size</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/data/mytransforms.html#Scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.mytransforms.Scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.train.data.mytransforms.find_start_pos">
+<code class="sig-prename descclassname">src.train.data.mytransforms.</code><code class="sig-name descname">find_start_pos</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">row_sample</span></em>, <em class="sig-param"><span class="n">start_line</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/train/data/mytransforms.html#find_start_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.train.data.mytransforms.find_start_pos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="src.train.utils.html" class="btn btn-neutral float-right" title="src.train.utils namespace" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="src.train.html" class="btn btn-neutral float-left" title="src.train package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

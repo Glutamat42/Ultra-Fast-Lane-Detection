@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Integrate into your project &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Code" href="../modules.html" />
+    <link rel="prev" title="Testing" href="test.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="howtos.html">HOWTOs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#create-dataset">Create dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#train">Train</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#test-and-use-the-model">Test and use the model</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="howtos.html#toc">TOC</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="carla_setup.html">CARLA setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup.html">Project setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generate_dataset_from_carla.html">HOWTO: Generate labeled data from CARLA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="create_dataset.html">HOWTO: Create a dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="create_a_profile.html">Create a config/profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="train.html">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html#add-testing-code">Add testing code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html#run-test">Run test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html#visual-test">Visual test</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Integrate into your project</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#use-as-standalone-application">Use as standalone application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#use-as-dependency">Use as dependency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#improve-runtime-performance">Improve runtime performance</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="howtos.html">HOWTOs</a> &raquo;</li>
+        
+      <li>Integrate into your project</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/howto/integrate_into_your_own_project.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="integrate-into-your-project">
+<h1>Integrate into your project<a class="headerlink" href="#integrate-into-your-project" title="Permalink to this headline">¶</a></h1>
+<p>This project ist build as standalone application.
+It will be started as its own process might use different ways to communicate with other processes like a message bus, files or REST.
+If this project should be integrated into another project as dependency some adjustments would be required, which will be described below.</p>
+<div class="section" id="use-as-standalone-application">
+<h2>Use as standalone application<a class="headerlink" href="#use-as-standalone-application" title="Permalink to this headline">¶</a></h2>
+<p>This is the intended way to use this project.</p>
+<p>It can be executed with a system service, by another application or by hand by simply issuing a command like <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">ufld.py</span> <span class="pre">&lt;config&gt;</span> <span class="pre">[params]</span></code>.
+See the other Howtos for examples.</p>
+<p>I expect you have already a trained model at this point and also a fully working config. I won’t cover this here.
+If you are missing something, see the corresponding howtos.</p>
+<p>Depending on your usage scenario it might be required to create a custom input module and probably be necessary to write a custom output module.</p>
+<p>If you will use the <a class="reference internal" href="../src.runtime.modules.input.html#src.runtime.modules.input.input_video.input_camera" title="src.runtime.modules.input.input_video.input_camera"><span class="xref myst py py-func">camera input</span></a> and <a class="reference internal" href="../src.runtime.modules.output.html#module-src.runtime.modules.output.out_prod" title="src.runtime.modules.output.out_prod"><span class="xref myst py py-mod">prod output module</span></a> you can use the special mode <code class="docutils literal notranslate"><span class="pre">prod</span></code>, otherwise you have to define input and output modules manually.</p>
+<div class="section" id="input-module">
+<h3>Input module<a class="headerlink" href="#input-module" title="Permalink to this headline">¶</a></h3>
+<p>I expect that this application will access your camera.
+If this expectation is true, the default <a class="reference internal" href="../src.runtime.modules.input.html#src.runtime.modules.input.input_video.input_camera" title="src.runtime.modules.input.input_video.input_camera"><span class="xref myst py py-func">camera input module</span></a> will be sufficient.
+If your scenario prevents opencv from accessing your camera you have to write your own input module.
+A possible scenario would be that the image is delivered by a message bus.
+In that case simply write a module that waits for data on the bus and passes the frame on as soon as its ready.</p>
+<p>See <a class="reference internal" href="../src.runtime.modules.input.html"><span class="doc std std-doc">input modules</span></a> for more information.</p>
+<p>A good reference for your own module is probably the <a class="reference internal" href="../src.runtime.modules.input.html#src.runtime.modules.input.input_video.input_camera" title="src.runtime.modules.input.input_video.input_camera"><span class="xref myst py py-func">camera input module</span></a>.</p>
+</div>
+<div class="section" id="output-module">
+<h3>Output module<a class="headerlink" href="#output-module" title="Permalink to this headline">¶</a></h3>
+<p>I expect the existing modules aren’t sufficient for your production use case.
+Because ot that there is already an empty <a class="reference internal" href="../src.runtime.modules.output.html#module-src.runtime.modules.output.out_prod" title="src.runtime.modules.output.out_prod"><span class="xref myst py py-mod">output module <code class="docutils literal notranslate"><span class="pre">prod</span></code></span></a> which you can use to implement your own custom logic.
+It is already fully integrated into the project and can be directly used via the <code class="docutils literal notranslate"><span class="pre">prod</span></code> special mode or by adding it to the <code class="docutils literal notranslate"><span class="pre">output_mode</span></code> cfg option.</p>
+<p>A possible scenario for your output module might be to calculate some angles or distances to the lanes and pass them via a message bus or REST call to another application.</p>
+<p>See <a class="reference internal" href="../src.runtime.modules.output.html"><span class="doc std std-doc">output modules</span></a> and <a class="reference internal" href="../src.runtime.modules.output.html#module-src.runtime.modules.output.out_prod" title="src.runtime.modules.output.out_prod"><span class="xref myst py py-mod"><code class="docutils literal notranslate"><span class="pre">prod</span></code> output module</span></a></p>
+<p>A good reference for your own module is probably the <a class="reference internal" href="../src.runtime.modules.output.html#module-src.runtime.modules.output.out_json" title="src.runtime.modules.output.out_json"><span class="xref myst py py-mod">json output module</span></a>.</p>
+</div>
+</div>
+<div class="section" id="use-as-dependency">
+<h2>Use as dependency<a class="headerlink" href="#use-as-dependency" title="Permalink to this headline">¶</a></h2>
+<p>This usage is currently not supported by this project.</p>
+<p>If it should be used that way some adjustments would be required, which will be described here.
+As it’s not yet implemented this is more like a concept which might not be complete.</p>
+<div class="section" id="entry-point">
+<h3>Entry point<a class="headerlink" href="#entry-point" title="Permalink to this headline">¶</a></h3>
+<p>The current entry point is <code class="docutils literal notranslate"><span class="pre">ufld.py</span></code>.
+The code there would probably also be the starting point if used as dependency.
+Use this code as a reference when developing the API.</p>
+</div>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>The interface described in the above section does not provide any parameters to configure this package.
+To be precise the whole package does not really support this behaviour.
+It completely relies on the <code class="docutils literal notranslate"><span class="pre">cfg</span></code> which is initialized at startup.
+Changing this would probably require rewriting large parts of the project.
+If it is sufficient for you to set the config at startup and changing parameters during runtime is not required solving this problem is relatively easy.
+Otherwise, it would be quite problematic.
+Changing the cfg during runtime will result in unpredictable behaviour as those values are often used in method/function declarations.
+Those values are only once and will never change. Also configs are often only read once in initialization logic.
+Like i wrote before the conclustion is that large parts of the code would have to be rewritten.</p>
+<p>Let’s focus on the feasible approach: setting the config once and dont touch it during runtime.
+The most obvious way would be to simply use the config file.
+Currently, there is no way to specify which config to use from the entrypoint.
+The responsible function for that is <a class="reference internal" href="../src.common.config.html#src.common.config.global_config.merge_config" title="src.common.config.global_config.merge_config"><span class="xref myst py py-func">merge_config</span></a>, which passes the CLI arg <code class="docutils literal notranslate"><span class="pre">config</span></code> to the config parser.
+Either hardcode a config there or provide a way to communicate with that function.
+Pay attention, that the <code class="docutils literal notranslate"><span class="pre">cfg</span></code> has to be completely initialized before <strong>any</strong> other code of the project is imported.</p>
+<p>If this approach is too static/inflexible it would also be considerable to change the configs <a class="reference internal" href="../src.common.config.html#src.common.config.global_config.init" title="src.common.config.global_config.init"><span class="xref myst py py-func">init function</span></a> in a way it accepts custom config entries.
+This is probably the better approach but will require a bit more coding.
+Again remember, that the <code class="docutils literal notranslate"><span class="pre">cfg</span></code> has to be completely initialized before <strong>any</strong> other code of the project is imported.
+With that change the config has to be initialized in the projects’ entry point where you now can pass arguments to the config.
+Currently, the config is initialized in <code class="docutils literal notranslate"><span class="pre">src/__init__.py</span></code>.
+This code can now be removed, but this change isn’t that important, as the <code class="docutils literal notranslate"><span class="pre">init</span></code> method is developed in a way that it won’t touch the config if it is already initialized.</p>
+<p>A potential problem could be the CLI argument parsing of this project.
+This functionality is only required in a standalone version and should now be removed to avoid problems with the main application.</p>
+</div>
+</div>
+<div class="section" id="improve-runtime-performance">
+<h2>Improve runtime performance<a class="headerlink" href="#improve-runtime-performance" title="Permalink to this headline">¶</a></h2>
+<p>Especially on batch_size 1 (which should be used in live scenarios) and on slower hardware the fps might drop below 10.
+As this could be too slow i will provider some concepts to improve performance</p>
+<div class="section" id="rewrite-runtime">
+<h3>Rewrite runtime<a class="headerlink" href="#rewrite-runtime" title="Permalink to this headline">¶</a></h3>
+<p>The first idea you might get is “writing an optimized version of the runtime package”.
+While this is idea isn’t wrong, there are other aspects you should look first.
+For this project performance was not the first priority, so I did some compromises in favor of understandable and expandable code.
+So it’s definitely possible to improve performance with this approach a bit, but at least it should not be the first thing to start with.</p>
+</div>
+<div class="section" id="optimize-input-module">
+<h3>Optimize input module<a class="headerlink" href="#optimize-input-module" title="Permalink to this headline">¶</a></h3>
+<p>This concept is probably the most promising one. Preprocessing (and Postprocessing) consumes a lot of computing time.
+Some ideas are</p>
+<ul class="simple">
+<li><p>Lower camera / input frame resolution<br />
+You don’t benefit from high resolutions like Full HD.
+Before you can pass a frame to <code class="docutils literal notranslate"><span class="pre">process_frames</span></code> it has to be scaled down the nets resolution (per default: 800x288)</p></li>
+<li><p>Especially if your module is compute heavy using hw acceleration or multiple cores might improve performance significantly.<br />
+Beware that a python interpreter is locked to one single core, even if using multiple threads, but there are ways to use multiple cores.</p></li>
+<li><p>Process multiple frames at the same time.<br />
+Using batch sizes above 1 doesn’t help, but you could pass another frame to the net before the previous one returned.
+This won’t improve the latency (instead it might increase latency a bit due to higher cpu / gpu usage), but it will increase fps, because with batch_size 1 neither cpu nor gpu will be highly utilized.</p></li>
+<li><p>Use optimized (C) code for compute heavy tasks</p></li>
+</ul>
+<p>Another approach that might increase performance would be to crop images before passing to the net.
+The idea is to remove the sky (where obviously are no lanes) to decrease the data that has to be processed.
+Make sure that you don’t spend more computing time for cropping than you save by evaluating the data.</p>
+<p>Also decreasing the amount of h_samples will slightly increase performance.</p>
+</div>
+<div class="section" id="optimizing-output-module">
+<h3>Optimizing output module<a class="headerlink" href="#optimizing-output-module" title="Permalink to this headline">¶</a></h3>
+<p>Just like explained for input modules, use multiple cores, let another application process data or use better performing code.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../modules.html" class="btn btn-neutral float-right" title="Code" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="test.html" class="btn btn-neutral float-left" title="Testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

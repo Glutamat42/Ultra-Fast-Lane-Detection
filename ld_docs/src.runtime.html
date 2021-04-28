@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.runtime package &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.runtime.modules package" href="src.runtime.modules.html" />
+    <link rel="prev" title="src.train.utils namespace" href="src.train.utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="src.train.html">src.train package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">src.runtime package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#runtime-py-frameprocessor">runtime.py / FrameProcessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#input-modules">Input modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output-modules">Output modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#measure-performance">Measure performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.runtime.modules.html">src.runtime.modules package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.runtime.utils.html">src.runtime.utils namespace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.runtime.runtime.html">src.runtime.runtime module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html">src.common package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs.html">configs namespace</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Code</a> &raquo;</li>
+        
+      <li>src.runtime package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/src.runtime.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="src-runtime-package">
+<h1>src.runtime package<a class="headerlink" href="#src-runtime-package" title="Permalink to this headline">¶</a></h1>
+<p>The runtime package contains the logik required to work with a trained model. It covers many scenarios like accuracy testing, visual previews or production use.
+To be as flexible as possible this package was build with modularity in mind.</p>
+<p>The basic structure of this package is shown in the following diagram.</p>
+<p><img alt="Diagram: Runtime module" src="_images/runtime_diagram.png" /></p>
+<div class="section" id="runtime-py-frameprocessor">
+<h2>runtime.py / FrameProcessor<a class="headerlink" href="#runtime-py-frameprocessor" title="Permalink to this headline">¶</a></h2>
+<p>The entry point for this module is <a class="reference internal" href="src.runtime.runtime.html"><span class="doc std std-doc">runtime.py</span></a>. It covers multiple responsibilities.</p>
+<ul class="simple">
+<li><p>Setup input module</p></li>
+<li><p>Setup output module</p></li>
+<li><p>Setup neural network (load trained model from disk)</p></li>
+<li><p>Start input module</p></li>
+</ul>
+<p>This file also contains the <a class="reference internal" href="src.runtime.runtime.html#src.runtime.runtime.FrameProcessor" title="src.runtime.runtime.FrameProcessor"><span class="xref myst py py-class">FrameProcessor</span></a>. This class doesn’t really do much.
+It’s only a wrapper arround the net() call.</p>
+</div>
+<div class="section" id="input-modules">
+<h2>Input modules<a class="headerlink" href="#input-modules" title="Permalink to this headline">¶</a></h2>
+<p>Input modules are responsible for supplying data to the FrameProcessor.
+Possible data source can be, among others, cameras, videos, screen recording or image files.
+Only one input module can be used per application instance.</p>
+<p>See <a class="reference internal" href="src.runtime.modules.input.html"><span class="doc std std-doc">input modules</span></a> for further information.</p>
+</div>
+<div class="section" id="output-modules">
+<h2>Output modules<a class="headerlink" href="#output-modules" title="Permalink to this headline">¶</a></h2>
+<p>These modules will do something useful with output data of the neural network.
+This could for example be an accuracy test, a live preview or a json export.</p>
+<p>Multiple output modules can be used simultaneously.
+This is an easy way for example to additionally display a live video that shows the detected markers.
+However, this simplicity is at the expense of performance, since the same calculations are probably performed several
+times in the different modules. If a frequent use of such a scenario is planned, especially if performance is relevant,
+another module should be developed which combines the respective modules.</p>
+<p>See <a class="reference internal" href="src.runtime.modules.output.html"><span class="doc std std-doc">output modules</span></a> for further information.</p>
+</div>
+<div class="section" id="measure-performance">
+<h2>Measure performance<a class="headerlink" href="#measure-performance" title="Permalink to this headline">¶</a></h2>
+<p>To benchmark the runtime just set <code class="docutils literal notranslate"><span class="pre">measure_time</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.
+This will log the time each frame took to stdout.
+When the application exits, you will also see the average values over the whole execution.
+You will get three values:</p>
+<ul class="simple">
+<li><p>real fps</p></li>
+<li><p>fps without output module</p></li>
+<li><p>fps without output module and without input module</p></li>
+</ul>
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="src.runtime.modules.html">src.runtime.modules package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="src.runtime.utils.html">src.runtime.utils namespace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="src.runtime.runtime.html">src.runtime.runtime module</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="src.runtime.modules.html" class="btn btn-neutral float-right" title="src.runtime.modules package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="src.train.utils.html" class="btn btn-neutral float-left" title="src.train.utils namespace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

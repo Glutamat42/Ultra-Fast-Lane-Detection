@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>UFLD Documentation &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="HOWTOs" href="howto/howtos.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>UFLD Documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ufld-documentation">
+<h1>UFLD Documentation<a class="headerlink" href="#ufld-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Our master project consists of parts. One part is about the neural network, which is discussed in this documentation.
+The other part is about generating datasets from CARLA. The documentation about this part can be found <strong><a class="reference external" href="https://mi-project.markus-heck.dev/carla_docs/index.html" title="(in Ultra Fast Lane Detection)"><span class="xref myst">here</span></a></strong>.</p>
+<div class="section" id="ufld-project-overview">
+<h2>UFLD Project overview<a class="headerlink" href="#ufld-project-overview" title="Permalink to this headline">¶</a></h2>
+<p>The project is splitted into two parts</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="src.train.html"><span class="doc std std-doc">Train</span></a>: This module contains the code to train a model</p></li>
+<li><p><a class="reference internal" href="src.runtime.html"><span class="doc std std-doc">Runtime</span></a>: Contains the code for everything besides training, eg testing, demo or production usage</p></li>
+</ul>
+<p>There’s also some shared code between these two parts which is located under <a class="reference internal" href="src.common.html"><span class="doc std std-doc">common</span></a>.</p>
+<p>The <a class="reference internal" href="scripts.html"><span class="doc std std-doc">scripts</span></a> namespace contains many scripts “around” the project, eg to convert/prepare Datasets or to record
+testing data from <a class="reference external" href="https://carla.org/">CARLA</a>.</p>
+</div>
+<div class="section" id="datasets">
+<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this headline">¶</a></h2>
+<p>The dataset has to meet our dataset definition exactly. If the dataset doesn’t fulfill the specification exactly it will
+fail. See <a class="reference internal" href="howto/create_a_profile.html"><span class="doc std std-doc">creating a dataset</span></a> for details.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The main application is used by running the <code class="docutils literal notranslate"><span class="pre">ufld.py</span></code> file. The usage of the scripts is different per script. See their documentation / the howtos for details on their usage.</p>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference internal" href="howto/setup.html"><span class="doc std std-doc">HOWTO: Setup</span></a></p>
+</div>
+<div class="section" id="config-cli-parameters">
+<h2>Config/CLI Parameters<a class="headerlink" href="#config-cli-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Every parameter has a default value, specified in the default profile. Every config entry can be overridden in a custom
+config and also via CLI. To use config options via the CLI interface prefix them with <code class="docutils literal notranslate"><span class="pre">--</span></code>, eg <code class="docutils literal notranslate"><span class="pre">--batch_size</span> <span class="pre">16</span></code>. All
+available options are documented under <code class="docutils literal notranslate"><span class="pre">ufld.py</span> <span class="pre">--help</span></code> and <a class="reference internal" href="configs.html"><span class="doc std std-doc">configs</span></a>.</p>
+<p>An example command for training could look like</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python ufld.py configs/carla_trainset02.py --mode train
+</pre></div>
+</div>
+<p>To test your model you could use a command like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">ufld</span><span class="o">.</span><span class="n">py</span> <span class="n">configs</span><span class="o">/</span><span class="n">carla_trainset02</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">mode</span> <span class="n">test</span>
+</pre></div>
+</div>
+<p>For further examples see <a class="reference internal" href="howto/howtos.html"><span class="doc std std-doc">HOWTOs</span></a></p>
+</div>
+<div class="section" id="collecting-data-from-carla">
+<h2>Collecting data from CARLA<a class="headerlink" href="#collecting-data-from-carla" title="Permalink to this headline">¶</a></h2>
+<p>CARLA is one way to get training and test data. Sadly CARLA doesn’t provide the required information over its API. As a
+result it’s quite complicated to generate a dataset from CARLA. We wrote some scripts which make this possible. These
+are located in a separate <a class="reference external" href="https://github.com/Glutamat42/Carla-Lane-Detection-Dataset-Generation">project on Github</a> folder.
+Also have a look <a class="reference external" href="https://mi-project.markus-heck.dev/carla_docs/howto/generate_dataset_from_carla.html" title="(in Ultra Fast Lane Detection)"><span class="xref myst">on this HOWTO</span></a> which explains their usage.</p>
+</div>
+<div class="section" id="howtos">
+<h2>HOWTOs<a class="headerlink" href="#howtos" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="howto/howtos.html"><span class="doc std std-doc">HOWTOs</span></a> section provides guides for every common usecase/problem of this application.</p>
+<p>If you can’t await it to use this project in your application you can have a look on the <a class="reference internal" href="howto/integrate_into_your_own_project.html"><span class="doc std std-doc">HOWTO: Integrate into your project</span></a>.
+This will give you an outline, but be warned, you won’t be able to start with this howto without completing the other ones.</p>
+</div>
+<div class="section" id="build-documentation">
+<h2>Build documentation<a class="headerlink" href="#build-documentation" title="Permalink to this headline">¶</a></h2>
+<p>The project has to be <a class="reference internal" href="howto/setup.html"><span class="doc std std-doc">set up</span></a>.</p>
+<ol class="simple">
+<li><p>Change to <code class="docutils literal notranslate"><span class="pre">docs/</span></code></p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">html</span></code></p></li>
+</ol>
+<p>Note: To create a docstring rst file use a command like <code class="docutils literal notranslate"><span class="pre">sphinx-apidoc</span> <span class="pre">--implicit-namespaces</span> <span class="pre">-o</span> <span class="pre">source/</span> <span class="pre">../scripts/</span></code> from inside the docs directory.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">scripts namespace</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="howto/howtos.html" class="btn btn-neutral float-right" title="HOWTOs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

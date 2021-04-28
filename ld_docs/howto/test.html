@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Testing &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Integrate into your project" href="integrate_into_your_own_project.html" />
+    <link rel="prev" title="Training" href="train.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="howtos.html">HOWTOs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#create-dataset">Create dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#train">Train</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#test-and-use-the-model">Test and use the model</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="howtos.html#toc">TOC</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="setup.html">Project setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="create_dataset.html">HOWTO: Create a dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="create_a_profile.html">Create a config/profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="train.html">Training</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-testing-code">Add testing code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-test">Run test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visual-test">Visual test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="integrate_into_your_own_project.html">Integrate into your project</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="howtos.html">HOWTOs</a> &raquo;</li>
+        
+      <li>Testing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/howto/test.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="testing">
+<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
+<p>This Howto explains how to test a trained model.</p>
+<p>To test a model we use the testing algorithm provided by TuSimple for their <a class="reference external" href="https://github.com/TuSimple/tusimple-benchmark">Lane Detection Challenge</a>.</p>
+</div>
+<div class="section" id="add-testing-code">
+<h1>Add testing code<a class="headerlink" href="#add-testing-code" title="Permalink to this headline">¶</a></h1>
+<p>Sadly the code from TuSimple contains no license, so it can’t be included in this project. To use it you have to add the code by yourself.</p>
+<p><strong>Short version</strong>: If you are using Linux, make sure you have git installed and run <code class="docutils literal notranslate"><span class="pre">sh</span> <span class="pre">./add_testing_code.sh</span></code> from the projects root directory.</p>
+<ol class="simple">
+<li><p>Open <a class="reference external" href="https://github.com/TuSimple/tusimple-benchmark/blob/master/evaluate/lane.py">tusimple-benchmark/evaluate/lane.py</a> and copy all the code</p></li>
+<li><p>From this project open the file src/runtime/utils/evaluation/lane.py in a text editor and paste the code from the previous step</p></li>
+<li><p>Either do one of the following steps</p>
+<ul class="simple">
+<li><p><strong>apply patch</strong> (provides code documentation, requires git installed)<br />
+The patch is bundled with this documentation. It can be downloaded below, but for the following instructions, <strong>downloading the patch is not required</strong></p>
+<ol class="simple">
+<li><p>open a terminal / command line and change to your projects root directory (where <code class="docutils literal notranslate"><span class="pre">ufld.py</span></code> is located)</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">apply</span> <span class="pre">docs/source/_static/required_changes_for_LaneEval_+_adding_some_documentation.patch</span></code><br />
+<strong>For Windows users</strong> this command might need some changes, at least the <code class="docutils literal notranslate"><span class="pre">/</span></code> will have to be changed to <code class="docutils literal notranslate"><span class="pre">\</span></code>.</p></li>
+</ol>
+</li>
+<li><p><strong>apply required fixes manually</strong></p>
+<ol class="simple">
+<li><p>in line 3: change <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">ujson</span> <span class="pre">as</span> <span class="pre">json</span></code> to <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">json</span> <span class="pre">as</span> <span class="pre">json</span></code></p></li>
+<li><p>in line 67: remove <code class="docutils literal notranslate"><span class="pre">or</span> <span class="pre">'run_time'</span> <span class="pre">not</span> <span class="pre">in</span> <span class="pre">pred</span></code> (keep the <code class="docutils literal notranslate"><span class="pre">:</span></code>)</p></li>
+<li><p>in line 71: change <code class="docutils literal notranslate"><span class="pre">run_time</span> <span class="pre">=</span> <span class="pre">pred['run_time']</span></code> to <code class="docutils literal notranslate"><span class="pre">run_time</span> <span class="pre">=</span> <span class="pre">10</span></code></p></li>
+<li><p>line 93 until file end: remove this code</p></li>
+<li><p>line 56: replace <code class="docutils literal notranslate"><span class="pre">(...)</span></code> with <code class="docutils literal notranslate"><span class="pre">(json_pred,</span> <span class="pre">json_gt)</span></code></p></li>
+<li><p>line 57 - 63: remove these lines</p></li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<p><a class="reference download internal" download="" href="../_downloads/2ddbd87c9bf4792d1c7126816d112acd/required_changes_for_LaneEval_+_adding_some_documentation.patch"><code class="xref download docutils literal notranslate"><span class="pre">required_changes_for_LaneEval_+_adding_some_documentation.patch</span></code></a></p>
+</div>
+<div class="section" id="run-test">
+<h1>Run test<a class="headerlink" href="#run-test" title="Permalink to this headline">¶</a></h1>
+<p>Running a test is as simple as</p>
+<ol class="simple">
+<li><p>define trained model by setting parameter <code class="docutils literal notranslate"><span class="pre">trained_model</span></code></p></li>
+<li><p>run the test.<br />
+If we want to set the trained model via CLI and assume we used the working directory we used in the previous howtos the command could look as follows:<br />
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">ufld.py</span> <span class="pre">configs/sample_dataset.py</span> <span class="pre">--mode</span> <span class="pre">test</span> <span class="pre">--trained_model</span> <span class="pre">/home/user/work_dir/20201205_234831_lr_4e-04_b_4_ex_prof/ep004.pth</span></code><br />
+<code class="docutils literal notranslate"><span class="pre">--mode</span> <span class="pre">test</span></code> runs ufld in a special runtime mode. It automatically sets all required modules.</p></li>
+</ol>
+<p>After the test finished it will print its result. For our previous example, trained for 100 epochs this will be</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Accuracy</span> <span class="mf">0.9383928571428571</span>
+<span class="n">FP</span> <span class="mf">0.15</span>
+<span class="n">FN</span> <span class="mf">0.15</span>
+</pre></div>
+</div>
+<p>Additionally, it writes the results to <code class="docutils literal notranslate"><span class="pre">test_results.csv</span></code> in the model’s directory.</p>
+<p>For the accuracy we would like to get into the range of 0,97/0,98.
+The values are that low here because the example dataset is way too small.</p>
+</div>
+<div class="section" id="visual-test">
+<h1>Visual test<a class="headerlink" href="#visual-test" title="Permalink to this headline">¶</a></h1>
+<p>It’s not just nice to visually see the results, it’s also helping to understand how the network works and what you have to improve/where your model has problems.
+To do a visual inspection the approach is identical to the test above, just replace <code class="docutils literal notranslate"><span class="pre">--mode</span> <span class="pre">test</span></code> with <code class="docutils literal notranslate"><span class="pre">--mode</span> <span class="pre">preview</span></code>.
+This is another special mode which automatically sets up the required configuration to show the results of our test-dataset visually.
+Note that our example dataset is tiny. Our <code class="docutils literal notranslate"><span class="pre">test.json</span></code> contains only 10 frames.</p>
+<p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">ufld.py</span> <span class="pre">configs/sample_dataset.py</span> <span class="pre">--mode</span> <span class="pre">preview</span> <span class="pre">--trained_model</span> <span class="pre">/home/user/work_dir/20201205_234831_lr_4e-04_b_4_ex_prof/ep004.pth</span></code></p>
+<p>We can cheat here and use our training set to get a longer preview. The results here will be better than in reality/our test set.
+In production use the test data should not be used to evaluate the quality of a model!</p>
+<p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">ufld.py</span> <span class="pre">configs/sample_dataset.py</span> <span class="pre">--mode</span> <span class="pre">preview</span> <span class="pre">--trained_model</span> <span class="pre">/home/user/work_dir/20201205_234831_lr_4e-04_b_4_ex_prof/ep004.pth</span> <span class="pre">--test_txt</span> <span class="pre">train_gt.txt</span></code></p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="integrate_into_your_own_project.html" class="btn btn-neutral float-right" title="Integrate into your project" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="train.html" class="btn btn-neutral float-left" title="Training" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

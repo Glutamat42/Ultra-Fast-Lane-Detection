@@ -1,15 +1,1 @@
-**/__pycache__
-
-*.pyc
-*.pth
-
-*vscode
-
-**/build
-
-evaluate 
-tmp
-
-*.avi
-
-docs/build
+.idea

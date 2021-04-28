@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Input Modules - src.runtime.modules.input namespace &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Output modules - src.runtime.modules.output namespace" href="src.runtime.modules.output.html" />
+    <link rel="prev" title="src.runtime.modules package" href="src.runtime.modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="src.train.html">src.train package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="src.runtime.html">src.runtime package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="src.runtime.html#runtime-py-frameprocessor">runtime.py / FrameProcessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.runtime.html#input-modules">Input modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.runtime.html#output-modules">Output modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.runtime.html#measure-performance">Measure performance</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="src.runtime.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="src.runtime.modules.html">src.runtime.modules package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.runtime.utils.html">src.runtime.utils namespace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.runtime.runtime.html">src.runtime.runtime module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html">src.common package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configs.html">configs namespace</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Code</a> &raquo;</li>
+        
+          <li><a href="src.runtime.html">src.runtime package</a> &raquo;</li>
+        
+          <li><a href="src.runtime.modules.html">src.runtime.modules package</a> &raquo;</li>
+        
+      <li>Input Modules - src.runtime.modules.input namespace</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/src.runtime.modules.input.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="input-modules-src-runtime-modules-input-namespace">
+<h1>Input Modules - src.runtime.modules.input namespace<a class="headerlink" href="#input-modules-src-runtime-modules-input-namespace" title="Permalink to this headline">¶</a></h1>
+<p>An input module is responsible to supply frames to the application. To achieve this the module gets
+the <a class="reference internal" href="src.runtime.runtime.html#src.runtime.runtime.FrameProcessor.process_frames" title="src.runtime.runtime.FrameProcessor.process_frames"><span class="xref myst py py-meth">process_frames</span></a> method passed, which is used by the module to
+send data to the FrameProcessor. See its documentation for more details on its parameters</p>
+<p>The input module will only be called once. As soon as it returns the application will exit. An input module has to be
+registered in <a class="reference internal" href="src.runtime.runtime.html#src.runtime.runtime.setup_input" title="src.runtime.runtime.setup_input"><span class="xref myst py py-func">setup_input</span></a>.</p>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-src.runtime.modules.input.input_images">
+<span id="src-runtime-modules-input-input-images-module"></span><h3>src.runtime.modules.input.input_images module<a class="headerlink" href="#module-src.runtime.modules.input.input_images" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt id="src.runtime.modules.input.input_images.input_images">
+<code class="sig-prename descclassname">src.runtime.modules.input.input_images.</code><code class="sig-name descname">input_images</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process_frames</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span>torch.Tensor<span class="p">, </span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>List<span class="p">[</span>numpy.ndarray<span class="p">]</span><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">input_file</span><span class="o">=</span><span class="default_value">'cfg.data_root/cfg.test_txt'</span></em>, <em class="sig-param"><span class="n">data_root</span><span class="o">=</span><span class="default_value">'cfg.data_root'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/input/input_images.html#input_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.input.input_images.input_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>load images frame by frame and passes them to process_frame</p>
+<p>used non-basic-cfg values:</p>
+<ul class="simple">
+<li><p>test_txt</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_frames</strong> – function taking a list of preprocessed frames, file paths and source frames</p></li>
+<li><p><strong>input_file</strong> – index txt file to process</p></li>
+<li><p><strong>data_root</strong> – root directory of dataset</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.runtime.modules.input.input_screencap">
+<span id="src-runtime-modules-input-input-screencap-module"></span><h3>src.runtime.modules.input.input_screencap module<a class="headerlink" href="#module-src.runtime.modules.input.input_screencap" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt id="src.runtime.modules.input.input_screencap.input_screencap">
+<code class="sig-prename descclassname">src.runtime.modules.input.input_screencap.</code><code class="sig-name descname">input_screencap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process_frames</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">mon</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/runtime/modules/input/input_screencap.html#input_screencap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.input.input_screencap.input_screencap" title="Permalink to this definition">¶</a></dt>
+<dd><p>record from screen
+batch size is always 1</p>
+<p>This is was implemented to test GTA. Its a bit difficult to use. You have to manually specify the
+position and size of your target window here. If your information are wrong (out of screen) you’ll get
+a cryptic exception!
+Make sure your config resolution matches your settings here.</p>
+<p>used non-basic cfg options: screencap_enable_image_forwarding</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_frames</strong> – function taking a list of preprocessed frames, file paths and source frames</p></li>
+<li><p><strong>mon</strong> – position and size of recording window, eg {‘top’: 0, ‘left’: 3440, ‘width’: 1920, ‘height’: 1080}</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.runtime.modules.input.input_video">
+<span id="src-runtime-modules-input-input-video-module"></span><h3>src.runtime.modules.input.input_video module<a class="headerlink" href="#module-src.runtime.modules.input.input_video" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt id="src.runtime.modules.input.input_video.input_camera">
+<code class="sig-prename descclassname">src.runtime.modules.input.input_video.</code><code class="sig-name descname">input_camera</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process_frames</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span>torch.Tensor<span class="p">, </span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>List<span class="p">[</span>numpy.ndarray<span class="p">]</span><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">camera_number</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">'cfg.camera_input_cam_number'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/input/input_video.html#input_camera"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.input.input_video.input_camera" title="Permalink to this definition">¶</a></dt>
+<dd><p>camera input wrapper for input_video()</p>
+<p>used non-basic-cfg values:</p>
+<ul class="simple">
+<li><p>camera_input_cam_number</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_frames</strong> – function taking a list of preprocessed frames, file paths and source frames</p></li>
+<li><p><strong>camera_number</strong> – opencv camera index</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.runtime.modules.input.input_video.input_video">
+<code class="sig-prename descclassname">src.runtime.modules.input.input_video.</code><code class="sig-name descname">input_video</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process_frames</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span>torch.Tensor<span class="p">, </span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>List<span class="p">[</span>numpy.ndarray<span class="p">]</span><span class="p">]</span><span class="p">, </span>None<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">input_file</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'cfg.video_input_file'</span></em>, <em class="sig-param"><span class="n">names_file</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/runtime/modules/input/input_video.html#input_video"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.runtime.modules.input.input_video.input_video" title="Permalink to this definition">¶</a></dt>
+<dd><p>read a video file or camera stream. batch size is always 1</p>
+<p>used non-basic-cfg values:</p>
+<ul class="simple">
+<li><p>video_input_file</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_frames</strong> – function taking a list of preprocessed frames, file paths and source frames</p></li>
+<li><p><strong>input_file</strong> – video file (path; string) or camera index (integer)</p></li>
+<li><p><strong>names_file</strong> – list with file paths to the frames of the video; if names_file and frames (jpg’s) are available the input images module can also be used</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="src.runtime.modules.output.html" class="btn btn-neutral float-right" title="Output modules - src.runtime.modules.output namespace" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="src.runtime.modules.html" class="btn btn-neutral float-left" title="src.runtime.modules package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

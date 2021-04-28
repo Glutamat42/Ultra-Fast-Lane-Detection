@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>HOWTO: Create a dataset &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Create a config/profile" href="create_a_profile.html" />
+    <link rel="prev" title="Project setup" href="setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="howtos.html">HOWTOs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#create-dataset">Create dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#train">Train</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#test-and-use-the-model">Test and use the model</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="howtos.html#toc">TOC</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="carla_setup.html">CARLA setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup.html">Project setup</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">HOWTO: Create a dataset</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#specifications">Specifications:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prepare-the-dataset">Prepare the dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tusimple">TuSimple</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="create_a_profile.html">Create a config/profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="train.html">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html#add-testing-code">Add testing code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html#run-test">Run test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html#visual-test">Visual test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="integrate_into_your_own_project.html">Integrate into your project</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="howtos.html">HOWTOs</a> &raquo;</li>
+        
+      <li>HOWTO: Create a dataset</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/howto/create_dataset.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="howto-create-a-dataset">
+<h1>HOWTO: Create a dataset<a class="headerlink" href="#howto-create-a-dataset" title="Permalink to this headline">¶</a></h1>
+<p>This Howto explains how a to create a dataset and which specifications it has to fulfill. It does not cover the “data collecting” part. For this Howto i expect you to already have labeled data.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://mi-project.markus-heck.dev/carla_docs/howto/generate_dataset_from_carla.html" title="(in Ultra Fast Lane Detection)"><span class="xref myst">This Howto</span></a> shows how to generate labeled data from CARLA.</p></li>
+<li><p>The <a class="reference external" href="https://github.com/TuSimple/tusimple-benchmark/issues/3">TuSimple</a> dataset is also compatible with this howto. The TuSimple section describes the particularities to be followed</p></li>
+<li><p>The <a class="reference external" href="https://xingangpan.github.io/projects/CULane.html">CULane</a> dataset can also be used here, but requires some additional steps which I will not treat here.</p></li>
+</ul>
+<div class="section" id="specifications">
+<h2>Specifications:<a class="headerlink" href="#specifications" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="source-for-this-howto">
+<h3>Source for this HOWTO<a class="headerlink" href="#source-for-this-howto" title="Permalink to this headline">¶</a></h3>
+<p>You need a folder containing:</p>
+<ul class="simple">
+<li><p>a folder containing JPEG images</p></li>
+<li><p>a labels file</p></li>
+</ul>
+<p>A sample dataset containing 100 images is available here:</p>
+<p><a class="reference download internal" download="" href="../_downloads/1d8be3cb3eb4c35e3c5438aa3fb3b8e7/sample_dataset.zip"><code class="xref download docutils literal notranslate"><span class="pre">sample_dataset.zip</span></code></a></p>
+<p>You can use this dataset to complete this Howto.</p>
+<div class="section" id="images">
+<h4>Images<a class="headerlink" href="#images" title="Permalink to this headline">¶</a></h4>
+<p>The structure of the image folder doesn’t matter. In theory, you don’t even need a separate folder for your frames.</p>
+<p><strong>Image file type</strong>: Probably other image types will also work, but only JPEG is tested. I would recommend to stick to JPEG.</p>
+<p><strong>Image resolution</strong>: Per default the net will work with scaled images with a resolution of 288x800. Use this resolution as a reference. We use 1280x720. Higher resolutions will also work, but i wouldn’t go too high as this might decrease performance. I would suggest something between 1280x720 and 1920x1080, but I haven’t done any tests on this topic.</p>
+</div>
+</div>
+<div class="section" id="labels-file">
+<h3>Labels file<a class="headerlink" href="#labels-file" title="Permalink to this headline">¶</a></h3>
+<p>This file contains a list of stringified JSON-Objects, <strong>not</strong> a JSON-Array. Every object has to be a one-liner. One line will be called a “sample”.</p>
+<p>Every sample has three attributes</p>
+<ul class="simple">
+<li><p>lanes: a list of lanes. There will always be exactly four lanes. The order of the lanes doesn’t matter. A lane is a list of i x-coordinates, where i has to be always the same and always the same as for h_samples</p></li>
+<li><p>h_samples: a list of y coordinates</p></li>
+<li><p>raw_file: relative path to corresponding image</p></li>
+</ul>
+<div class="section" id="addressing-lane-points-on-image">
+<h4>Addressing lane-points on image<a class="headerlink" href="#addressing-lane-points-on-image" title="Permalink to this headline">¶</a></h4>
+<p>The lanes are not handled as lines. Instead they are represented as a list of points. Every point</p>
+<p>Lanes are not handled as lines. Instead, they are represented as a list of points. Not every pixel on which a line is visible is part of this list. A list of h_samples is defined, which define the resolution of the rasterization. Each intersection of a road marking with the h_samples is stored in the list of points.</p>
+<p>Addressing in y-direction is done from top to bottom. The topmost h_sample should be chosen around or slightly above the horizon. If it is chosen too high, it will never be used. If it is chosen too low, lanes could not be recognized up to the horizon. For the h_samples a distance of 10 pixels is usually chosen but this can be chosen individually.</p>
+<p>The following sketch shows in red the h_samples (70, 80, 90, 100, 100). The intersection points of the road markings with the h_samples are marked in green. This example results in the following lane arrays:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="mi">67</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">39</span><span class="p">]</span>
+<span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">98</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">102</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Since there must always be exactly four lines, two more have to be added. However, since there are no more on the image, they must be assigned to the rest class. Non-existing intersections receive the value <code class="docutils literal notranslate"><span class="pre">-2</span></code>. Since the two non-existent lines obviously belong completely to the rest class, each value in the arrays has the value -2.</p>
+<p><img alt="sketch labels" src="../_images/sketch_labels.jpg" /></p>
+<p>This provides all the necessary information for a label. The following JSON object results for the sketch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;lanes&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],[</span><span class="mi">67</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">39</span><span class="p">],</span> <span class="p">[</span><span class="mi">98</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">102</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]],</span>
+    <span class="s2">&quot;h_samples: [70, 80, 90, 100, 110],</span>
+    <span class="s2">&quot;raw_file&quot;</span><span class="p">:</span> <span class="s2">&quot;sketch_labels.jpg&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When saving to the labels file, the line breaks within the objects must be removed!</p>
+</div>
+</div>
+<div class="section" id="input-for-this-project-aka-result-of-this-howto">
+<h3>Input for this project - aka result of this HOWTO<a class="headerlink" href="#input-for-this-project-aka-result-of-this-howto" title="Permalink to this headline">¶</a></h3>
+<p>There have to be separate label files for training, testing and ideally for validation. Also there have to be index files and segmentation images.</p>
+<ul class="simple">
+<li><p><strong>segmenatation images</strong>: For each training frame there has to be a segmentation-label image. This is a black grayscale image with the lanes drawn on them. The color value of the drawn lanes is 1, 2, 3 and 4 from the left to the right</p></li>
+<li><p><strong>separate label files</strong>: simply the original label file splitted into multiple files. 80% train and 20% test are good values here.</p></li>
+<li><p><strong>index files</strong>: Every line contains the path to one frame. In case of training it also contains the path to the segmentation label image and an indicator showing which lane markings exists.<br />
+Eg (training): <code class="docutils literal notranslate"><span class="pre">dataset/clips/000/Left/right_curve/0143.jpg</span> <span class="pre">dataset/clips/000/Left/right_curve/0143.png</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span></code></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="prepare-the-dataset">
+<h2>Prepare the dataset<a class="headerlink" href="#prepare-the-dataset" title="Permalink to this headline">¶</a></h2>
+<p>Now that we hopefully understand the dataset specifications we can start to convert/preprocess the dataset.</p>
+<div class="section" id="split-labels">
+<h3>Split labels<a class="headerlink" href="#split-labels" title="Permalink to this headline">¶</a></h3>
+<p>This can be done with the script <a class="reference internal" href="../scripts.html"><span class="doc std std-doc">split_dataset.py</span></a>. Simply open that file, insert your labels-file path and how much of your dataset should be used for testing and validation (as percent) and run it. This will create the files <code class="docutils literal notranslate"><span class="pre">train_labels.json,</span> <span class="pre">test.json,</span> <span class="pre">validate.json</span></code> in the same folder as your source file is located. Make sure these files don’t exist, otherwise the script will fail.</p>
+<p>This script will take the data from different locations of the source file (per default: 10) to prevent the creation of unbalanced records.</p>
+</div>
+<div class="section" id="reduce-amount-of-train-data">
+<h3>Reduce amount of train data<a class="headerlink" href="#reduce-amount-of-train-data" title="Permalink to this headline">¶</a></h3>
+<p>Training with large datasets will take a huge amount of time. Especially if the dataset was recorded at a high framerate this script could be used to decrease training time by creating a smaller train_labels file.</p>
+<p>The following screenshot shows the results of one of our largest datasets. As you can see, by scaling down the training dataset, the training duration can be drastically reduced with only a slight loss of accuracy.</p>
+<p><img alt="sketch labels" src="../_images/training_speed_scaled_train_set.png" /></p>
+<p>You can use the script <a class="reference internal" href="../scripts.html"><span class="doc std std-doc">create_smaller_train_set.py</span></a> to scale your dataset. This script will create a new labels file and won’t modify any other files.
+Edit the file and set your path, the scaling percentage and the filename to the function call at the bottom of the file. Now run the script.</p>
+<p><em>Hint</em>: If you are using the provided sample dataset you should skip this step.</p>
+</div>
+<div class="section" id="create-segmentation-labels-and-index-files">
+<h3>create segmentation labels and index files<a class="headerlink" href="#create-segmentation-labels-and-index-files" title="Permalink to this headline">¶</a></h3>
+<p>These files can be created with the help of <a class="reference internal" href="../scripts.html"><span class="doc std std-doc">create_seg_labels_and_index_files.py</span></a>. Run this file from the command line. A sample call could be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">create_seg_labels_and_index_files</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">root</span> <span class="s2">&quot;/home/markus/sample_dataset/&quot;</span> <span class="o">--</span><span class="n">train_files</span> <span class="n">train_labels</span><span class="o">.</span><span class="n">json</span> <span class="o">--</span><span class="n">test_files</span> <span class="n">test</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>This might take 1-2 Minutes to complete.</p>
+<p>The script currently does not support validation files. One way to proceed with <code class="docutils literal notranslate"><span class="pre">validate.json</span></code> would be to run the script again and replace <code class="docutils literal notranslate"><span class="pre">test.json</span></code> with <code class="docutils literal notranslate"><span class="pre">validate.json</span></code>.</p>
+<p>This step often reveals mistakes in dataset creation. For a quick validation you can just run this script. If it completes without errors or warnings your dataset ist probably valid in terms of syntax.</p>
+</div>
+<div class="section" id="validate-data">
+<h3>validate data<a class="headerlink" href="#validate-data" title="Permalink to this headline">¶</a></h3>
+<p>Its easy to make mistakes when creating a dataset. It might be a good idea to visually validate the dataset before you waste hours training garbage. “Garbage in, garbage out”. We did not do this earlier as we can now use the smaller <code class="docutils literal notranslate"><span class="pre">train.json</span></code> or <code class="docutils literal notranslate"><span class="pre">validate.json</span></code> files for that step. Also the dataset passed our “semantic validation” from the previous step.</p>
+<p>The script <a class="reference internal" href="../scripts.html"><span class="doc std std-doc">show_labels_on_image.py</span></a> takes a labels file name and a data(set) root. It will show the frames with the labels drawn on them.</p>
+<p>Edit the file and enter your path and filename to the function call at the bottom of the file. Now simply run the file and watch.</p>
+<p><em>Hint</em>: If you are using the provided sample dataset you might want to use the <code class="docutils literal notranslate"><span class="pre">train_gt.json</span></code> file for this step because this dataset is really small.</p>
+</div>
+</div>
+<div class="section" id="tusimple">
+<h2>TuSimple<a class="headerlink" href="#tusimple" title="Permalink to this headline">¶</a></h2>
+<p>This dataset is already divided into a train and test dataset. Therefore this step can be skipped. The remaining steps are applied unchanged.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python scripts/create_seg_labels_and_index_files.py --root /home/markus/master_project/tusimpleroot/ --train_files label_data_0601.json,label_data_0531.json,label_data_0313.json --test_files test_tasks_0627.json
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="create_a_profile.html" class="btn btn-neutral float-right" title="Create a config/profile" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="setup.html" class="btn btn-neutral float-left" title="Project setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

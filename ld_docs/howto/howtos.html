@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>HOWTOs &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Project setup" href="setup.html" />
+    <link rel="prev" title="UFLD Documentation" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">HOWTOs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-dataset">Create dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#train">Train</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-and-use-the-model">Test and use the model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#toc">TOC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="setup.html">Project setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="create_dataset.html">HOWTO: Create a dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="create_a_profile.html">Create a config/profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="train.html">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html#add-testing-code">Add testing code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html#run-test">Run test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test.html#visual-test">Visual test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="integrate_into_your_own_project.html">Integrate into your project</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>HOWTOs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/howto/howtos.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="howtos">
+<h1>HOWTOs<a class="headerlink" href="#howtos" title="Permalink to this headline">¶</a></h1>
+<p>The Howtos will guide you through the whole process starting with the collection of data till production use.</p>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://mi-project.markus-heck.dev/carla_docs/howto/carla_setup.html" title="(in Ultra Fast Lane Detection)"><span class="xref myst">CARLA Setup</span></a><br />
+<a class="reference internal" href="setup.html"><span class="doc std std-doc">UFLD Setup</span></a></p>
+</div>
+<div class="section" id="create-dataset">
+<h2>Create dataset<a class="headerlink" href="#create-dataset" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://mi-project.markus-heck.dev/carla_docs/howto/generate_dataset_from_carla.html" title="(in Ultra Fast Lane Detection)"><span class="xref myst">Collect data from CARLA</span></a><br />
+<a class="reference internal" href="create_dataset.html"><span class="doc std std-doc">Convert dataset to meet the specifications</span></a></p>
+</div>
+<div class="section" id="train">
+<h2>Train<a class="headerlink" href="#train" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="create_a_profile.html"><span class="doc std std-doc">Create a config/profile for your dataset</span></a><br />
+<a class="reference internal" href="train.html"><span class="doc std std-doc">Train a model</span></a></p>
+</div>
+<div class="section" id="test-and-use-the-model">
+<h2>Test and use the model<a class="headerlink" href="#test-and-use-the-model" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="test.html"><span class="doc std std-doc">Test the model</span></a><br />
+<a class="reference internal" href="integrate_into_your_own_project.html"><span class="doc std std-doc">Integrate UFLD into your own project</span></a></p>
+</div>
+<div class="section" id="toc">
+<h2>TOC<a class="headerlink" href="#toc" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Project setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#training-without-cuda-capable-gpu">Training without CUDA capable GPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#setup">Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_dataset.html">HOWTO: Create a dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_dataset.html#specifications">Specifications:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_dataset.html#prepare-the-dataset">Prepare the dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_dataset.html#tusimple">TuSimple</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_a_profile.html">Create a config/profile</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_a_profile.html#h-samples">h_samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_a_profile.html#batch-size">batch_size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_a_profile.html#example-config">Example config</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="train.html">Training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="train.html#start-training">Start training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="train.html#monitoring">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="train.html#what-now">What now?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html#add-testing-code">Add testing code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html#run-test">Run test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html#visual-test">Visual test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integrate_into_your_own_project.html">Integrate into your project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="integrate_into_your_own_project.html#use-as-standalone-application">Use as standalone application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integrate_into_your_own_project.html#use-as-dependency">Use as dependency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integrate_into_your_own_project.html#improve-runtime-performance">Improve runtime performance</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="setup.html" class="btn btn-neutral float-right" title="Project setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="UFLD Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

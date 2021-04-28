@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.train.utils.metrics &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../howto/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../scripts.html">scripts namespace</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.train.utils.metrics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.train.utils.metrics</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+
+
+<div class="viewcode-block" id="converter"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.converter">[docs]</a><span class="k">def</span> <span class="nf">converter</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="fast_hist"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.fast_hist">[docs]</a><span class="k">def</span> <span class="nf">fast_hist</span><span class="p">(</span><span class="n">label_pred</span><span class="p">,</span> <span class="n">label_true</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
+    <span class="n">hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">num_classes</span> <span class="o">*</span> <span class="n">label_true</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">+</span> <span class="n">label_pred</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="n">num_classes</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">hist</span> <span class="o">=</span> <span class="n">hist</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">hist</span></div>
+
+
+<div class="viewcode-block" id="Metric_mIoU"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.Metric_mIoU">[docs]</a><span class="k">class</span> <span class="nc">Metric_mIoU</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_num</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_num</span> <span class="o">=</span> <span class="n">class_num</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">class_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_num</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Metric_mIoU.update"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.Metric_mIoU.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="c1"># predict, target = converter(predict), converter(target)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hist</span> <span class="o">+=</span> <span class="n">fast_hist</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_num</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Metric_mIoU.reset"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.Metric_mIoU.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">class_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_num</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Metric_mIoU.get_miou"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.Metric_mIoU.get_miou">[docs]</a>    <span class="k">def</span> <span class="nf">get_miou</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">miou</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hist</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hist</span><span class="p">))</span>
+        <span class="n">miou</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">miou</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">miou</span></div>
+
+<div class="viewcode-block" id="Metric_mIoU.get_acc"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.Metric_mIoU.get_acc">[docs]</a>    <span class="k">def</span> <span class="nf">get_acc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hist</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">hist</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">acc</span></div>
+
+<div class="viewcode-block" id="Metric_mIoU.get"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.Metric_mIoU.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_miou</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="MultiLabelAcc"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.MultiLabelAcc">[docs]</a><span class="k">class</span> <span class="nc">MultiLabelAcc</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="MultiLabelAcc.reset"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.MultiLabelAcc.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="MultiLabelAcc.update"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.MultiLabelAcc.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="c1"># predict, target = converter(predict), converter(target)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">predict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correct</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">predict</span> <span class="o">==</span> <span class="n">target</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MultiLabelAcc.get_acc"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.MultiLabelAcc.get_acc">[docs]</a>    <span class="k">def</span> <span class="nf">get_acc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">correct</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span></div>
+
+<div class="viewcode-block" id="MultiLabelAcc.get"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.MultiLabelAcc.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_acc</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="AccTopk"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.AccTopk">[docs]</a><span class="k">class</span> <span class="nc">AccTopk</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">background_classes</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">background_classes</span> <span class="o">=</span> <span class="n">background_classes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top5_correct</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="AccTopk.reset"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.AccTopk.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top5_correct</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="AccTopk.update"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.AccTopk.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="c1"># predict, target = converter(predict), converter(target)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">predict</span><span class="p">)</span>
+        <span class="n">background_idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">predict</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">background_classes</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">target</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">background_classes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top5_correct</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">predict</span><span class="p">[</span><span class="n">background_idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">[</span><span class="n">background_idx</span><span class="p">])</span>
+        <span class="n">not_background_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">background_idx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top5_correct</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">predict</span><span class="p">[</span><span class="n">not_background_idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">target</span><span class="p">[</span><span class="n">not_background_idx</span><span class="p">])</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AccTopk.get"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.AccTopk.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">top5_correct</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span></div></div>
+
+
+<div class="viewcode-block" id="update_metrics"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.update_metrics">[docs]</a><span class="k">def</span> <span class="nf">update_metrics</span><span class="p">(</span><span class="n">metric_dict</span><span class="p">,</span> <span class="n">pair_data</span><span class="p">):</span>
+    <span class="n">predict</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])):</span>
+        <span class="n">metric_op</span> <span class="o">=</span> <span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;op&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">data_src</span> <span class="o">=</span> <span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;data_src&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">predict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">predict</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">pair_data</span><span class="p">[</span><span class="n">data_src</span><span class="p">[</span><span class="mi">0</span><span class="p">]]),</span> <span class="n">converter</span><span class="p">(</span><span class="n">pair_data</span><span class="p">[</span><span class="n">data_src</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+
+        <span class="n">metric_op</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="c1"># metric_op.update(pair_data[data_src[0]], pair_data[data_src[1]])</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;data_src&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;data_src&#39;</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]):</span>
+            <span class="n">predict</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="reset_metrics"><a class="viewcode-back" href="../../../../src.train.utils.html#src.train.utils.metrics.reset_metrics">[docs]</a><span class="k">def</span> <span class="nf">reset_metrics</span><span class="p">(</span><span class="n">metric_dict</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;op&#39;</span><span class="p">]:</span>
+        <span class="n">op</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># p = np.random.randint(5, size=(800, 800))</span>
+    <span class="c1"># t = np.zeros((800, 800))</span>
+    <span class="c1"># me = Metric_mIoU(5)</span>
+    <span class="c1"># me.update(p,p)</span>
+    <span class="c1"># me.update(p,t)</span>
+    <span class="c1"># me.update(p,p)</span>
+    <span class="c1"># me.update(p,t)</span>
+    <span class="c1"># print(me.get_miou())</span>
+    <span class="c1"># print(me.get_acc())</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">me</span> <span class="o">=</span> <span class="n">AccTopk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">me</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">converter</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">converter</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+    <span class="c1"># me.update(b, a)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, cfzd; 2020 Markus Heck
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
