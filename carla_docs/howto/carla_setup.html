@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>CARLA setup &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="HOWTO: Generate labeled data from CARLA" href="generate_dataset_from_carla.html" />
+    <link rel="prev" title="HOWTOs" href="howtos.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="howtos.html">HOWTOs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#create-dataset">Create dataset</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="howtos.html#toc">TOC</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CARLA setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="generate_dataset_from_carla.html">HOWTO: Generate labeled data from CARLA</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="howtos.html">HOWTOs</a> &raquo;</li>
+        
+      <li>CARLA setup</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/howto/carla_setup.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="carla-setup">
+<h1>CARLA setup<a class="headerlink" href="#carla-setup" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>In order to generate a dataset in CARLA, you need to make sure, that CARLA simulator is installed. At this point it is very important to note, that it is recommended to install <code class="docutils literal notranslate"><span class="pre">version</span> <span class="pre">0.9.10</span></code>, since this was the build all the code was developed on.</p>
+<hr class="docutils" />
+<p><strong>NOTE</strong></p>
+<p>You can also let it run on an older version of CARLA, but we can’t promise that it will work. If you want to stay on the safe side, just install the version mentioned above.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>CARLA Simulator can be installed using the following link:
+<a class="reference external" href="https://github.com/carla-simulator/carla/blob/master/Docs/download.md">https://github.com/carla-simulator/carla/blob/master/Docs/download.md</a></p>
+<p>For more information on installation and builds refer to CARLA’s official github respository.</p>
+<p>For our project do the following:</p>
+<ol>
+<li><p>Locate your CARLA installation folder and navigate to the <code class="docutils literal notranslate"><span class="pre">PythonAPI</span></code> directory:</p>
+<div class="highlight-Shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> CARLA_0.9.10<span class="se">\W</span>indowsNoEditor<span class="se">\P</span>ythonAPI
+</pre></div>
+</div>
+</li>
+<li><p>Clone our project.</p>
+<div class="highlight-Shell notranslate"><div class="highlight"><pre><span></span>git clone &lt;git link&gt;
+<span class="nb">cd</span> carla-lanedetection
+</pre></div>
+</div>
+</li>
+<li><p>Install necessary dependencies.</p>
+<div class="highlight-Shell notranslate"><div class="highlight"><pre><span></span>pip install -r requirements.txt
+</pre></div>
+</div>
+</li>
+<li><p>Run the scripts described in <a class="reference internal" href="generate_dataset_from_carla.html"><span class="doc std std-doc">this Howto</span></a>.</p></li>
+</ol>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>Before you start creating your own dataset, make sure that your carla server is running.
+If the server is not running, you can do so by doing the following:</p>
+<p>For Windows Users:</p>
+<ul>
+<li><p>If you prefer to use the GUI, go to your main directory and navigate to <code class="docutils literal notranslate"><span class="pre">\CARLA_0.9.10\WindowsNoEditor</span></code>. There you should find a file called <code class="docutils literal notranslate"><span class="pre">CarlaUE4.exe</span></code>. To start the server, just launch this file. <strong>Note</strong>: This way the server is launched without any parameters. All default settings are applied for the server. If you want to apply different parameters, make sure to use the following method.</p></li>
+<li><p>If you prefer the commandline, go to your main directory.
+Navigate to <code class="docutils literal notranslate"><span class="pre">WindowsNoEditor</span></code> and launch the <code class="docutils literal notranslate"><span class="pre">CarlaUE4.exe</span></code>:</p>
+<div class="highlight-Shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> CARLA_0.9.10<span class="se">\W</span>indowsNoEditor
+
+<span class="c1"># This way allows you to set parameters like windowsize and quality-level</span>
+CarlaUE4.exe -carla-server -windowed -ResX<span class="o">=</span><span class="m">480</span> -ResY<span class="o">=</span><span class="m">320</span> -quality-level<span class="o">=</span>Low -benchmark -fps<span class="o">=</span><span class="m">10</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>For Linux Users:</p>
+<ul>
+<li><p>Navigate in your main directory, then run <code class="docutils literal notranslate"><span class="pre">CarlaUE4.sh</span></code> by entering the following command:</p>
+<div class="highlight-Shell notranslate"><div class="highlight"><pre><span></span>$ ./CarlaUE4.sh -carla-server -windowed -ResX<span class="o">=</span><span class="m">480</span> -ResY<span class="o">=</span><span class="m">320</span> -quality-level<span class="o">=</span>Low -benchmark -fps<span class="o">=</span><span class="m">10</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>After you launched the server, you can move on to the next step.</p>
+<p><strong>Hint</strong>: While you are running your carla client scripts, the server should not be shut down. Otherwise the scripts send a timeout message and won’t work.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="generate_dataset_from_carla.html" class="btn btn-neutral float-right" title="HOWTO: Generate labeled data from CARLA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="howtos.html" class="btn btn-neutral float-left" title="HOWTOs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020 Dominik Gerber, Julian Gebele
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

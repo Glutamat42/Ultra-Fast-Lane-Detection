@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>HOWTO: Generate labeled data from CARLA &mdash; Ultra Fast Lane Detection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="CARLA setup" href="carla_setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Ultra Fast Lane Detection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="howtos.html">HOWTOs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos.html#create-dataset">Create dataset</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="howtos.html#toc">TOC</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="carla_setup.html">CARLA setup</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">HOWTO: Generate labeled data from CARLA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#collect-rawimages-from-carla">1. Collect rawimages from CARLA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generate-a-dataset-from-the-collected-rawimages">2. Generate a dataset from the collected rawimages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#convert-the-images-to-video-optionally">3. Convert the images to video (Optionally)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ultra Fast Lane Detection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="howtos.html">HOWTOs</a> &raquo;</li>
+        
+      <li>HOWTO: Generate labeled data from CARLA</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/howto/generate_dataset_from_carla.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="howto-generate-labeled-data-from-carla">
+<h1>HOWTO: Generate labeled data from CARLA<a class="headerlink" href="#howto-generate-labeled-data-from-carla" title="Permalink to this headline">¶</a></h1>
+<p>This HOWTO explains how you can collect image files with its corresponding labels in CARLA Simulator to later train a deep neural network to detect lanemarkings on the road.</p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>At first it is necessary to understand the main folderstructure. The following tree structure shows how the core structure looks like:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>	/carla-lanedetection
+	  /src
+	  ├── scripts
+	  │   ├── buffered_saver.py
+	  │   ├── image_saver.py
+	  │   ├── label_loader.py
+	  │   ├── label_saver.py
+	  ├── config.py
+	  ├── dataset_generator.py
+	  ├── fast_lane_detection.py
+	  ├── image_to_video.py
+</pre></div>
+</div>
+<p>These are all the files that are needed to collect data from CARLA Simulator and convert them to a dataset.
+The bottom three files are the main files. These are the ones to execute in the commandline to start the whole process.
+The scripts folder contains files that are included in the main files. They implement helper methods to (pre-)process all the data.</p>
+<p>Important steps of this process are:</p>
+<ol class="simple">
+<li><p>Execute and run <code class="docutils literal notranslate"><span class="pre">fast_lane_detection.py</span></code>.
+This collects all the data in CARLA and saves them as .npy (numpy) files and generates temporary label files, which are later filtered.</p></li>
+<li><p>Execute and run <code class="docutils literal notranslate"><span class="pre">dataset_generator.py</span></code>.
+All the raw images and labels are then converted to .jpg images and .json labels. This file creates a <code class="docutils literal notranslate"><span class="pre">dataset</span></code> directory and places the processed files inside. Another task of this script is to balance the data.</p></li>
+<li><p>Execute and run <code class="docutils literal notranslate"><span class="pre">image_to_video.py</span></code>.  (Optionally)
+After generating the dataset, the images can then be converted to a video. This might be helpful, if you want to check your images and labels for errors.</p></li>
+</ol>
+</div>
+<div class="section" id="collect-rawimages-from-carla">
+<h2>1. Collect rawimages from CARLA<a class="headerlink" href="#collect-rawimages-from-carla" title="Permalink to this headline">¶</a></h2>
+<p>The script <code class="docutils literal notranslate"><span class="pre">fast_lane_detection.py</span></code> contains multiple classes, which are listed as follows:</p>
+<div class="section" id="carlasyncmode">
+<h3>CarlaSyncMode<a class="headerlink" href="#carlasyncmode" title="Permalink to this headline">¶</a></h3>
+<p>The synchronous mode ensures, that if we have different sensors mounted on our ego vehicle or in the world, all of these sensors gather data at the exact same time. This is an important step, since we have two different cameras mounted on our ego vehicle, on the one hand we have an RGB camera sensor, that collects images from the world, and on the other hand we have a semantic segmentation camera, which is needed for filtering lanepoints on objects in the world (more on that later). It’s basically really useful, when synchrony between different sensors is needed. In this mode, the server sets the speed of the overall simulation. All the data, which is coming from the client is put into a queue, and the server handles all these requests from the client. A really notably drawback from this is that the framerate drastically drops from 250+ FPS to about 20 FPS on a system with mediocre hardware (Intel i5 3240, NVidia 1060GTX, 8GB RAM). The class contains the communication and initializes the fixed time-steps and the behavior between server and client. For more information please refer to the official CARLA documentation website.</p>
+</div>
+<div class="section" id="vehiclemanager">
+<h3>VehicleManager<a class="headerlink" href="#vehiclemanager" title="Permalink to this headline">¶</a></h3>
+<p>This class manages the movement of the ego vehicle, as well as the spawning, despawning and movement of the other neighbor vehicles in the vicinity of the own car. The ego vehicle moves slightly different compared to the other cars. The oscillation (moving the vehicle from the left to the right between the lane markings) includes a zick-zack function and a rotation at the yaw-angle. Apart from the oscillation on the road, the ego vehicle uses a special system to move within the world. We decided to use a reliable system to move the own car precisely and quickly through the world. For this purpose, waypoints were an important tool. The algorithm of the movement of the ego vehicle is described as follows:</p>
+<ul class="simple">
+<li><p>Imagine we have a 2 dimenstional <code class="docutils literal notranslate"><span class="pre">waypoint_list</span></code>: 4 lanes and in each lane we have n waypoints. On startup we have to initialize our<code class="docutils literal notranslate"><span class="pre">waypoint_list</span></code> with n waypoints, the  <code class="docutils literal notranslate"><span class="pre">number_of_lanepoints</span></code> of the list can be adjusted in the <code class="docutils literal notranslate"><span class="pre">config.py.</span></code> It’s set to 50, but it can be 100 of course, which means that more lanepoints are displayed in front of the car. It’s basically a variable that determines how far we look on the road. The distance between the lanepoints can also be set, but for our purpose we set it to 1.0, which means that we look 50 meters ahead on our road, <code class="docutils literal notranslate"><span class="pre">meters_per_frame</span></code> can also be set to 0.5, so the lanepoints are just 0.5 meters apart from each other.</p></li>
+<li><p>Each time the server ticks, the ego vehicle is moved to the next waypoint within this list. You can also say that on each new frame the vehicle moves forward. Since we have initialized our <code class="docutils literal notranslate"><span class="pre">waypoint_list</span></code> with n waypoints, let’s say 50, we only have to calculate a maximum of 200 lanepoints one single time on startup: 50 calculations per lanepoint and 4 lanes in total. As soon as we’re in the gameloop, the computation gets reduced. On each tick, our ego vehicle has to look out for a new future lanepoint per lane and thus, we only have to compute a maximum of 4 lanepoints, since they are appended to the <code class="docutils literal notranslate"><span class="pre">waypoint_list</span></code>. So on each frame, new lanepoints are added and the old ones, which are behind the car, are removed from the list.</p></li>
+</ul>
+<p>Another really basic concept/algorithm was how to create a realistic traffic scenario with other vehicles in the vicinity of the own agent. We came up with a concept, which randomizes a lot of things, e.g. how many cars to spawn or on which position. For this purpose, a method was created to spawn 5 vehicles first. After that, the vehicles’ speed have to be locked to the speed of the own agent, so it looks like the neighbor vehicles are attached to the agent vehicle. Every<code class="docutils literal notranslate"><span class="pre">frame_counter</span></code> frames, the neighbor vehicles start to mix up and randomly spawn on different positions around the own car.</p>
+<p>Last but not least, there is a function, which is needed to detect, if a junction is ahead of our agent. This was useful to filter out junctions, we didn’t want to have in our dataset. The deep neural network might not be able to learn junctions correctly and it might lead to missclassification of the lanes.</p>
+</div>
+<div class="section" id="lanemarkings">
+<h3>LaneMarkings<a class="headerlink" href="#lanemarkings" title="Permalink to this headline">¶</a></h3>
+<p>This class is the most important one for lane detection. It contains functions for extracting and calculating the lane data from Carla and convert it to the correct format. The most important methods are described as follows:</p>
+<p><code class="docutils literal notranslate"><span class="pre">calculate3DLanepoints()</span></code>:
+Uses the up-vector, the forward vector of the actual lane and the position of the waypoint(in the middle of a lane) to calculate where the lane should be. This information is calculated by the cross product of the forward- and up-vector. The resulting vector is normalized and multiplied by the half of the lane width to get the correct length. Now the result is added to the waypoint and the coordinates of the laneposition is reached. In addition to the Lanemarking position of the own lane the function does also calculate the position of respectively adjacent lanes if existing and not an a junction. After checking if there is a lanemarking at all (carla.LaneMarkingType) the function appends the 3D positions to the lanes list and returns them.</p>
+<p><code class="docutils literal notranslate"><span class="pre">calculate2DLanepoints()</span></code>:
+Takes 3D-points of the Carla environment and transforms them to 2D-screen coordinates the camera recorded. Now the coordinates have to be formatted, so it can be passed into the neural network later. The wanted format are the x-values to a fix array of y-values for every lane.</p>
+<p><code class="docutils literal notranslate"><span class="pre">calculateYintersections()</span></code>:
+Calculates the intersection between the lanes and the horizontal row anchor lines, which are predefined by the deep neural network algorithm. This is done by connecting the 2D-coordinates and calculating their intersection with the horizontal the y-value line.</p>
+<p><code class="docutils literal notranslate"><span class="pre">filter2DLanepoints()</span></code>:
+Since the calculated lanepoints could be behind a house, wall, etc. and aren’t visible from the camera point of view, the deep neural network algorithm shouldn’t get them as input since it would increase errors. These points are filtered out with the help of the sematic segmentation camera which must have the same Transformation as the camera.</p>
+<p>On the top of that, there are several small functions that e.g. draw the calculated lanemarkings on the screen on runtime.</p>
+</div>
+<div class="section" id="carlagame">
+<h3>CarlaGame<a class="headerlink" href="#carlagame" title="Permalink to this headline">¶</a></h3>
+<p>This is our so-called main class of the script and it provides the fundamental functions that are necessary to run the game client. Upon running the script, the first function it calls is <code class="docutils literal notranslate"><span class="pre">execute()</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">initialize()</span></code>:
+This is the first method being called from <code class="docutils literal notranslate"><span class="pre">execute()</span></code>, which is used to set some initial parameters. The initialization includes starting the synchronous mode with the carla server, loading the map for the simulation from the <code class="docutils literal notranslate"><span class="pre">config.py</span></code>, defining positions of the camera in relation to the actor, setting the actor and the cameras (RGB camera as well as semantic segmentation camera), setting the VehicleManager, putting the actor in the simulation and initialize the buffered saver to be ready to recieve data.</p>
+<p><code class="docutils literal notranslate"><span class="pre">on_gameloop()</span></code>:
+After that, this method is being called. It determines the control flow of every frame and handles different things:</p>
+<ul class="simple">
+<li><p>the movement of all vehicles</p></li>
+<li><p>taking an image and saving them using <code class="docutils literal notranslate"><span class="pre">buffered_saver.py</span></code></p></li>
+<li><p>calculating the lane data and saving it using <code class="docutils literal notranslate"><span class="pre">labelsaver.py</span></code></p></li>
+<li><p>rendering the display and drawing the calculated lanes on the screen</p></li>
+<li><p>avoiding that the car always drives on the same lane.</p></li>
+<li><p>after how many images a reset has to happen.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="generate-a-dataset-from-the-collected-rawimages">
+<h2>2. Generate a dataset from the collected rawimages<a class="headerlink" href="#generate-a-dataset-from-the-collected-rawimages" title="Permalink to this headline">¶</a></h2>
+<p>We already covered the process of how to collect data in CARLA. Now in this step, we’ll be covering the process of generating a dataset from the collected data.</p>
+<p>After executing the first step, you should now have a folder, where all the collected images are saved and an intermediate json file, which contains the lanemarking labels for each image. Executing <code class="docutils literal notranslate"><span class="pre">dataset_generator.py</span></code> calls a helperclass, which loads the numpy arrays. After loading it executes other methods which are described as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">save_image_to_disk()</span></code>: Loads the labels to the corresponding image from the intermediate json file and converts the numpy array into .jpg images.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calculate</span> <span class="pre">folder()</span></code>: Classifies a label according to additional lanemarkings apart from the actual lane and by curves or straight lines. On this basis it returns a folder in which the image belongs. According to this classification, the image is moved to the folder, but only if the amount of files has not yet exceeded <code class="docutils literal notranslate"><span class="pre">maximal_files_per_classification</span></code>, specified in <code class="docutils literal notranslate"><span class="pre">config.py</span></code>. The label gets then adapted by the new directory and saved in the final label file.</p></li>
+</ul>
+<p>It’s not possible for the script to get images out of a numpy array and to balance the data properly, so that every specified classfolder has the same number of images. It’s probably best to take a last look on each pair of data and filter out incorrect images and labels. For more detail, refer to step 3 of this documentation.</p>
+<hr class="docutils" />
+<p><strong>NOTE</strong></p>
+<p>When generating a dataset, you probably want to record your data images on different towns. If you want to use a different map, you have to navigate to <code class="docutils literal notranslate"><span class="pre">config.py</span></code> and rename <code class="docutils literal notranslate"><span class="pre">CARLA_TOWN</span></code> to e.g. ‘Town03’, ‘Town04’ or ‘Town05’. Make sure that, after you’ve collected your data, you only have to execute the script <code class="docutils literal notranslate"><span class="pre">dataset_generator.py</span></code> once.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="convert-the-images-to-video-optionally">
+<h2>3. Convert the images to video (Optionally)<a class="headerlink" href="#convert-the-images-to-video-optionally" title="Permalink to this headline">¶</a></h2>
+<p>After generating a dataset, as described in the previous step, it’s probably not a bad idea to check, if all the images have the right labels. For this purpose we created this script. It can be used to gather all the .jpg images, which are saved in <code class="docutils literal notranslate"><span class="pre">data/debug</span></code>, and convert them to a .mp4 video. This displays all the labels on the images. With this script, it’s really easy to track down errors in the dataset. This was mainly used for debugging purposes in the development stage, but it’s also suitable for just checking the dataset.</p>
+<hr class="docutils" />
+<p><strong>NOTE</strong></p>
+<p>When executing the script <code class="docutils literal notranslate"><span class="pre">image_to_video.py</span></code>, make sure that you enter the correct town in <code class="docutils literal notranslate"><span class="pre">config.py</span></code>. Unfortunately, you have to rerun the script for every town, that is used in your dataset. We might fix this in the future!</p>
+<hr class="docutils" />
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="carla_setup.html" class="btn btn-neutral float-left" title="CARLA setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020 Dominik Gerber, Julian Gebele
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
